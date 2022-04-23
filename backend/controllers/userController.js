@@ -51,10 +51,19 @@ module.exports = {
      * userController.create()
      */
     create: function (req, res) {
+        var image;
+        try {
+            image = 'images/' + req.file.filename;
+        }
+        catch (err) {
+            image = "images/test";
+        }
+
         var user = new UserModel({
 			username : req.body.username,
 			password : req.body.password,
-			email : req.body.email
+			email : req.body.email,
+            path : image
         });
 
         user.save(function (err, user) {
@@ -66,7 +75,6 @@ module.exports = {
             }
 
             return res.status(201).json(user);
-            //return res.redirect('/users/login');
         });
     },
 
@@ -125,34 +133,33 @@ module.exports = {
         });
     },
 
-    showRegister: function(req, res){
+    showRegister: function(req, res) {
         res.render('user/register');
     },
 
-    showLogin: function(req, res){
+    showLogin: function(req, res) {
         res.render('user/login');
     },
 
-    login: function(req, res, next){
-        UserModel.authenticate(req.body.username, req.body.password, function(err, user){
-            if(err || !user){
+    login: function(req, res, next) {
+        UserModel.authenticate(req.body.username, req.body.password, function(err, user) {
+            if (err || !user) {
                 var err = new Error('Wrong username or paassword');
                 err.status = 401;
                 return next(err);
             }
             req.session.userId = user._id;
-            //res.redirect('/users/profile');
             return res.json(user);
         });
     },
 
-    profile: function(req, res,next){
+    profile: function(req, res,next) {
         UserModel.findById(req.session.userId)
-        .exec(function(error, user){
-            if(error){
+        .exec(function(error, user) {
+            if (error) {
                 return next(error);
-            } else{
-                if(user===null){
+            } else {
+                if (user===null) {
                     var err = new Error('Not authorized, go back!');
                     err.status = 400;
                     return next(err);
@@ -166,10 +173,9 @@ module.exports = {
     logout: function(req, res, next){
         if(req.session){
             req.session.destroy(function(err){
-                if(err){
+                if(err) {
                     return next(err);
-                } else{
-                    //return res.redirect('/');
+                } else {
                     return res.status(201).json({});
                 }
             });

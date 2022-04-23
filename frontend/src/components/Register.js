@@ -2,7 +2,7 @@ import { useContext, useState } from 'react';
 import { UserContext } from '../userContext';
 import { Navigate } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import { Button } from '@mui/material';
+import { Alert, AlertTitle, Button } from '@mui/material';
 import { TextField } from '@mui/material';
 import { Box } from '@mui/material';
 import { Grid } from '@mui/material';
@@ -12,37 +12,62 @@ import { Paper } from '@mui/material';
 import { Typography } from '@mui/material';
 import { Link } from '@mui/material';
 import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
+import PhotoCamera from '@mui/icons-material/PhotoCamera';
+import styled from '@emotion/styled';
+
+const Input = styled('input')({
+    display: 'none',
+});
 
 function Register() {
     const [email, setEmail] = useState([]);
     const [username, setUsername] = useState([]);
     const [password, setPassword] = useState([]);
     const [error, setError] = useState([]);
+    const [isError, showError] = useState(false);
+    const [file, setFile] = useState('');
     const userContext = useContext(UserContext); 
     const navigate = useNavigate()
 
     async function Register(e){
         e.preventDefault();
-        const res = await fetch("http://localhost:3001/users", {
+
+        if (!email) {
+            showError(true);
+            setError("Email cannot be empty.");
+            return;
+        } else if (!username) {
+            showError(true);
+            setError("Username cannot be empty.");
+            return;
+        } else if (!password) {
+            showError(true);
+            setError("Password cannot be empty.");
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('username', username);
+        formData.append('email', email);
+        formData.append('password', password);
+        formData.append('image', file);
+        const res = await fetch('http://localhost:3001/users', {
             method: 'POST',
             credentials: 'include',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                email: email,
-                username: username,
-                password: password
-            })
+            body: formData
         });
+
         const data = await res.json();
-        if(data._id !== undefined){
+        if (data._id !== undefined) {
             navigate('/login');
         }
-        else{
+        else {
             setEmail("");
             setUsername("");
             setPassword("");
             setEmail("");
-            setError("Registration failed");
+            showError(true);
+            setError("Registration failed!");
         }
     }
 
@@ -77,7 +102,7 @@ function Register() {
                      }}
                  >
                  <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
-                     <AccountCircleRoundedIcon/>
+                    <AccountCircleRoundedIcon/>
                  </Avatar>
                  <Typography component="h1" variant="h5">
                      Sign Up
@@ -123,22 +148,42 @@ function Register() {
                          onChange={(e)=>(setPassword(e.target.value))}
                          autoComplete="current-password"
                      />
-                     <label>{error}</label>
-                     <Button
-                         type="submit"
-                         fullWidth
-                         variant="contained"
-                         sx={{ mt: 3, mb: 2 }}
-                     >
-                         Sign Up
-                     </Button>
-                     <Grid container>
-                         <Grid item>
-                         <Link href="../login" variant="body2" sx={{mb: 2}}>
-                             {"Already have an account? Sign In"}
-                         </Link>
-                         </Grid>
-                     </Grid>
+                     <hr></hr>
+                     <label htmlFor="contained-button-file">
+                        <Input accept="image/*" id="contained-button-file" name="file" multiple type="file" onChange={(e) => {setFile(e.target.files[0])}} />
+                        <Button startIcon={<PhotoCamera/>} variant="contained" component="span">Select Photo</Button>
+                    </label>
+                    &nbsp;&nbsp;
+                    { file ? 
+                        "Photo is selected."
+                    :
+                        "Photo is not selected."
+                    }
+                    { isError ? 
+                        <>
+                        <hr></hr>
+                        <Alert severity="error">
+                            <AlertTitle>Error</AlertTitle>
+                            {error} <strong>Please try again!</strong>
+                        </Alert> 
+                        </>
+                        : ""
+                    }
+                    <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        sx={{ mt: 3, mb: 2 }}
+                    >
+                        Sign Up
+                    </Button>
+                    <Grid container>
+                        <Grid item>
+                        <Link href="../login" variant="body2" sx={{mb: 2}}>
+                            {"Already have an account? Sign In"}
+                        </Link>
+                        </Grid>
+                    </Grid>
                  </Box>
              </Box>
          </Grid>
