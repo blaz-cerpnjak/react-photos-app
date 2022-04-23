@@ -32,7 +32,9 @@ module.exports = {
     show: function (req, res) {
         var id = req.params.id;
 
-        PhotoModel.findOne({_id: id}, function (err, photo) {
+        PhotoModel.findOne({_id: id})
+        .populate('postedBy')
+        .exec(function (err, photo) {
             if (err) {
                 return res.status(500).json({
                     message: 'Error when getting photo.',
@@ -45,7 +47,7 @@ module.exports = {
                     message: 'No such photo'
                 });
             }
-
+            
             return res.json(photo);
         });
     },

@@ -8,6 +8,7 @@ import Register from "./components/Register";
 import Profile from "./components/Profile";
 import Logout from "./components/Logout";
 import AddPhoto from "./components/AddPhoto";
+import ShowPhoto from "./components/ShowPhoto"
 
 function App() {
   const [user, setUser] = useState(localStorage.user ? JSON.parse(localStorage.user) : null);
@@ -27,6 +28,7 @@ function App() {
             <Route path="/" exact element={<Photos />}></Route>
             <Route path="/login" exact element={<Login />}></Route>
             <Route path="/register" element={<Register />}></Route>
+            <Route path='/photos/:id' element={<ShowPhoto />}></Route>
             <Route path="/publish" element={<AddPhoto />}></Route>
             <Route path="/profile" element={<Profile />}></Route>
             <Route path="/logout" element={<Logout />}></Route>

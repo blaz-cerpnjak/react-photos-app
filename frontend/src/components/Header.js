@@ -23,6 +23,7 @@ const pages = ['Home', 'Pricing', 'Blog'];
 const settings = ['Upload Photo', 'Profile', 'Account', 'Dashboard', 'Logout'];
 
 function Header(props) {
+    const userContext = useContext(UserContext); 
     const navigate = useNavigate()
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -167,7 +168,7 @@ function Header(props) {
                         <Box sx={{ flexGrow: 0 }}>
                             <Tooltip title="Open settings">
                             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                                <Avatar src={"http://localhost:3001/"+userContext.user.path}></Avatar>
                             </IconButton>
                             </Tooltip>
                             <Menu

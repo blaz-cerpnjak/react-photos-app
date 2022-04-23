@@ -1,3 +1,5 @@
+import { useNavigate, useParams } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
@@ -12,39 +14,41 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { useNavigate } from 'react-router-dom';
+import { Container } from '@mui/material';
 
-function Photo(props){
+function ShowPhoto(props){
     const navigate = useNavigate()
+    const { id } = useParams();
+    console.log(id);
 
-    const imageOnClick = (event) => {
-        navigate('/photos/' + props.photo._id);
-    };
+    const [photo, setPhoto] = useState([]);
+    
+    useEffect(function(){
+        const getPhoto = async function() {
+            const res = await fetch("http://localhost:3001/photos/" + id);
+            const data = await res.json();
+            console.log(data);
+            console.log("TEST" + data.postedBy.username);
+            setPhoto(data);
+        }
+        getPhoto();
+    }, []);
 
     return (
         <>
-             <Card>
+        <Container>
+            <Card>
                 <CardHeader
-                    avatar={
-                        <Avatar sx={{ bgcolor: red[500] }} src={"http://localhost:3001/"+props.photo.postedBy.path}></Avatar>
-                    }
-                    action={
-                        <IconButton aria-label="settings">
-                            <MoreVertIcon />
-                        </IconButton>
-                    }
-                    title={props.photo.postedBy.username}
-                    subheader={props.photo.datetime}
+                    
                 />
                 <CardMedia
                     component="img"
-                    image={"http://localhost:3001/"+props.photo.path}
-                    alt={props.photo.name}
-                    onClick={imageOnClick}
+                    image={"http://localhost:3001/"+photo.path}
+                    alt={photo.name}
                 />
                 <CardContent>
                     <Typography variant="body2" color="text.secondary">
-                        {props.photo.name}
+                        {photo.name}
                     </Typography>
                 </CardContent>
                 <CardActions disableSpacing>
@@ -57,8 +61,9 @@ function Photo(props){
                 </CardActions>
             </Card>
             <br></br>
+        </Container>
         </>
     );
 }
 
-export default Photo;
+export default ShowPhoto;
