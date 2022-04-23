@@ -22,7 +22,6 @@ module.exports = {
             }
             var data = [];
             data.photos = photos;
-            //return res.render('photo/list', data);
             return res.json(photos);
         });
     },
@@ -60,7 +59,8 @@ module.exports = {
 			path : "/images/"+req.file.filename,
 			postedBy : req.session.userId,
 			views : 0,
-			likes : 0
+			likes : 0,
+            datetime: new Date()
         });
 
         photo.save(function (err, photo) {

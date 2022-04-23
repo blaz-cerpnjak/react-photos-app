@@ -28,8 +28,8 @@ function Photo(props){
                             <MoreVertIcon />
                         </IconButton>
                     }
-                    title="Blaz"
-                    subheader="September 14, 2016"
+                    title={props.photo.postedBy.username}
+                    subheader={props.photo.datetime}
                 />
                 <CardMedia
                     component="img"
@@ -50,6 +50,7 @@ function Photo(props){
                     </IconButton>
                 </CardActions>
             </Card>
+            <br></br>
         </>
     );
 }
