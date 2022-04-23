@@ -12,6 +12,7 @@ module.exports = {
      */
     list: function (req, res) {
         PhotoModel.find()
+        .sort('-datetime')
         .populate('postedBy')
         .exec(function (err, photos) {
             if (err) {
@@ -47,7 +48,7 @@ module.exports = {
                     message: 'No such photo'
                 });
             }
-            
+
             return res.json(photo);
         });
     },
