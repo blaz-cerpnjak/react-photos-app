@@ -1,10 +1,17 @@
+import { Container, IconButton } from '@mui/material';
 import { useContext, useState } from 'react'
 import { Navigate } from 'react-router';
 import { UserContext } from '../userContext';
+import PhotoCamera from '@mui/icons-material/PhotoCamera';
+import { styled } from '@mui/material/styles';
+
+const Input = styled('input')({
+    display: 'none',
+});
 
 function AddPhoto(props) {
     const userContext = useContext(UserContext); 
-    const[name, setName] = useState('');
+    const[name, setTitle] = useState('');
     const[file, setFile] = useState('');
     const[uploaded, setUploaded] = useState(false);
 
@@ -30,14 +37,23 @@ function AddPhoto(props) {
     }
 
     return (
-        <form className="form-group" onSubmit={onSubmit}>
-            {!userContext.user ? <Navigate replace to="/login" /> : ""}
-            {uploaded ? <Navigate replace to="/" /> : ""}
-            <input type="text" className="form-control" name="ime" placeholder="Ime slike" value={name} onChange={(e)=>{setName(e.target.value)}}/>
-            <label>Izberi sliko</label>
-            <input type="file" id="file" onChange={(e)=>{setFile(e.target.files[0])}}/>
-            <input className="btn btn-primary" type="submit" name="submit" value="Naloži" />
-        </form>
+        <>
+        <Container>
+            <br></br>
+            <form className="form-group" onSubmit={onSubmit}>
+                {!userContext.user ? <Navigate replace to="/login" /> : ""}
+                {uploaded ? <Navigate replace to="/" /> : ""}
+                <input type="text" className="form-control" name="ime" placeholder="Title" value={name} onChange={(e)=>{setTitle(e.target.value)}}/>
+                <label>Izberi sliko</label>
+                <input type="file" id="file" onChange={(e)=>{setFile(e.target.files[0])}}/>
+                <Input accept="image/*" id="icon-button-file" type="file" />
+                <IconButton color="primary" aria-label="upload picture" component="span">
+                    <PhotoCamera />
+                </IconButton>
+                <input className="btn btn-primary" type="submit" name="submit" value="Naloži" />
+            </form>
+        </Container>
+        </>
     )
 }
 

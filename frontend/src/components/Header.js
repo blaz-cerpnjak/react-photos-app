@@ -15,6 +15,9 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import CameraIcon from '@mui/icons-material/PhotoCamera';
+import { Icon, Stack } from '@mui/material';
+import AddBoxRoundedIcon from '@mui/icons-material/AddBoxRounded';
+import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 
 const pages = ['Home', 'Pricing', 'Blog'];
 const settings = ['Upload Photo', 'Profile', 'Account', 'Dashboard', 'Logout'];
@@ -25,9 +28,19 @@ function Header(props) {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
 
+    /* Icon Buttons */
+    const handleHomeOnClick = (event) => {
+        navigate('/');
+    };
+    const handleUploadOnClick  = (event) => {
+        navigate('/publish');
+    };
+
+    /* User Menu */
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
     };
+
     const handleOpenUserMenu = (event) => {
         setAnchorElUser(event.currentTarget);
     };
@@ -136,7 +149,19 @@ function Header(props) {
                     </Button>
                     ))}
                 </Box>
-                
+                <Stack
+                    direction='row'
+                    spacing={1}
+                    mr={2}
+                    sx={{ display: { xs: 'none', md: 'flex' } }}
+                >
+                    <IconButton onClick={handleHomeOnClick}>
+                        <HomeRoundedIcon sx={{ color: 'white' }}/>
+                    </IconButton>
+                    <IconButton onClick={handleUploadOnClick}>
+                        <AddBoxRoundedIcon sx={{ color: 'white' }}/>
+                    </IconButton>
+                </Stack>
                 <UserContext.Consumer>
                     { context => (context.user ? 
                         <Box sx={{ flexGrow: 0 }}>
