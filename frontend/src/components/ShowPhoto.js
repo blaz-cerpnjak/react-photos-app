@@ -5,36 +5,63 @@ import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
-import Collapse from '@mui/material/Collapse';
-import Avatar from '@mui/material/Avatar';
 import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import { red } from '@mui/material/colors';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { Button, Container, Divider, Grid, Paper, TextField } from '@mui/material';
+import { Alert, AlertTitle, Button, Container, Divider, Grid, Paper, TextField } from '@mui/material';
 import Comment from './Comment.js'
 import SendIcon from '@mui/icons-material/Send';
 
 function ShowPhoto(props){
     const navigate = useNavigate()
     const { id } = useParams();
-    console.log(id);
 
     const [photo, setPhoto] = useState([]);
-    
+    const [comment, setComment] = useState('');
+    const [error, setError] = useState('')
+    const [isError, showError] = useState(false);
+
     useEffect(function(){
         const getPhoto = async function() {
             const res = await fetch("http://localhost:3001/photos/" + id);
             const data = await res.json();
             console.log(data);
-            console.log("TEST" + data.postedBy.username);
             setPhoto(data);
         }
         getPhoto();
     }, []);
+
+    async function postComment(e){
+        e.preventDefault();
+
+        if (!comment) {
+            setError("You must write comment first.");
+            showError(true);
+            return;
+        }
+        showError(false);
+        
+        const res = await fetch("http://localhost:3001/photos/comment", {
+            method: "POST",
+            credentials: "include",
+            headers: { 'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                photoId: id,
+                comment: comment
+            })
+        });
+
+        const data = await res.json();
+        console.log(data);
+
+        if(data._id === undefined){
+            setError('Comment was not posted.');
+            showError(true);
+        } else {
+            setComment('');
+        }
+    }
 
     return (
         <>
@@ -64,10 +91,7 @@ function ShowPhoto(props){
             </Card>
             <br></br>
             <Paper style={{ padding: "40px 20px" }}>
-                <Comment comment="Example"/>
-                <Divider variant="fullWidth" style={{ margin: "30px 0" }} />
-                <Comment comment="Example"/>
-                <Divider variant="fullWidth" style={{ margin: "30px 0" }} />
+                { photo.comments && photo.comments.map(comment=>(<Comment comment={comment}></Comment>))}
                 <Grid container>
                     <Grid item xs={10}>
                         <TextField
@@ -75,6 +99,8 @@ function ShowPhoto(props){
                             name="comment"
                             label="Comment"
                             fullWidth
+                            value={comment} 
+                            onChange={(e)=>{setComment(e.target.value)}}
                             variant="standard"
                         />
                     </Grid>
@@ -84,6 +110,7 @@ function ShowPhoto(props){
                             display: { xs: 'none', md: 'flex' },
                         }} 
                         variant="contained" 
+                        onClick={postComment}
                         endIcon={<SendIcon />}
                     >
                         Post
@@ -92,11 +119,22 @@ function ShowPhoto(props){
                         sx={{
                             display: {xs : 'flex', md: 'none' },
                         }}
+                        onClick={postComment}
                     >
                         <SendIcon/>
                     </IconButton>
                     </Grid>
                 </Grid>
+                { isError ? 
+                    <>
+                    <br></br>
+                    <Alert severity="error">
+                        <AlertTitle>Error</AlertTitle>
+                        {error} <strong>Please try again!</strong>
+                    </Alert> 
+                    </>
+                    : ""
+                }
             </Paper>
             <br></br>
             <br></br>

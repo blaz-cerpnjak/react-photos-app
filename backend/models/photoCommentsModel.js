@@ -11,4 +11,5 @@ var photoCommentsSchema = new Schema({
    	}
 });
 
-module.exports = mongoose.model('photoComments', photoCommentsSchema);
+var photoComments = mongoose.model('photoComments', photoCommentsSchema);
+module.exports = photoComments;

@@ -1,7 +1,7 @@
 import { useContext, useState } from 'react';
 import { UserContext } from '../userContext';
 import { Navigate } from 'react-router-dom';
-import { Button } from '@mui/material';
+import { Alert, AlertTitle, Button } from '@mui/material';
 import { TextField } from '@mui/material';
 import { Box } from '@mui/material';
 import { Grid } from '@mui/material';
@@ -16,6 +16,7 @@ function Login(){
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
+    const [isError, showError] = useState(false);
     const userContext = useContext(UserContext); 
 
     async function Login(e){
@@ -36,6 +37,7 @@ function Login(){
             setUsername("");
             setPassword("");
             setError("Invalid username or password");
+            showError(true);
         }
     }
 
@@ -104,7 +106,16 @@ function Login(){
                                 onChange={(e)=>(setPassword(e.target.value))}
                                 autoComplete="current-password"
                             />
-                            <label>{error}</label>
+                            { isError ? 
+                                <>
+                                <br></br>
+                                <Alert severity="error">
+                                    <AlertTitle>Error</AlertTitle>
+                                    {error} <strong>Please try again!</strong>
+                                </Alert> 
+                                </>
+                                : ""
+                            }
                             <Button
                                 type="submit"
                                 fullWidth

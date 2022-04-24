@@ -20,6 +20,7 @@ router.get('/', photoController.list);
 router.get('/:id', photoController.show);
 
 router.post('/', requiresLogin, upload.single('image'), photoController.create);
+router.post('/comment', requiresLogin, photoController.comment);
 
 router.put('/:id', photoController.update);
 

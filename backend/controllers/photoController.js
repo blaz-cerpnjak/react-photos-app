@@ -1,4 +1,5 @@
 var PhotoModel = require('../models/photoModel.js');
+var PhotoCommentsModel = require('../models/photoCommentsModel.js');
 
 /**
  * photoController.js
@@ -35,6 +36,10 @@ module.exports = {
 
         PhotoModel.findOne({_id: id})
         .populate('postedBy')
+        .populate({
+			path: 'comments',
+			populate: {path: 'postedBy'}
+		})
         .exec(function (err, photo) {
             if (err) {
                 return res.status(500).json({
@@ -76,6 +81,50 @@ module.exports = {
 
             return res.status(201).json(photo);
             //return res.redirect('/photos');
+        });
+    },
+
+    /**
+     * photoController.comment()
+     */
+     comment: function (req, res) {
+        const id = req.body.photoId;
+        console.log("ID: " + id);
+        const comment = new PhotoCommentsModel({
+            postedBy: req.session.userId,
+            photoId: id,
+            datetime: new Date(),
+            comment: req.body.comment
+        });
+        
+        comment.save(function (err, photoComment) {
+            if (err) {
+                return res.status(500).json({
+                    message: 'Error when creating answerComments',
+                    error: err
+                });
+            }
+
+            PhotoModel.findById(id, function (err, photo) {
+                if (err) {
+                    return res.status(500).json({
+                        message: 'Photo not found.',
+                        error: err
+                    });
+                }
+
+                photo.comments.push(photoComment);
+
+                photo.save(function (err) {
+                    if(err) {
+                        console.log(err);
+                        return res.status(500).json({
+                            message: 'Error while saving photo data.',
+                            error: err
+                        })
+                    }
+                })
+            });
         });
     },
 
