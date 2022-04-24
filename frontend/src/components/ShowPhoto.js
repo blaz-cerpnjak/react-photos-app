@@ -14,7 +14,9 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { Container } from '@mui/material';
+import { Button, Container, Divider, Grid, Paper, TextField } from '@mui/material';
+import Comment from './Comment.js'
+import SendIcon from '@mui/icons-material/Send';
 
 function ShowPhoto(props){
     const navigate = useNavigate()
@@ -60,6 +62,43 @@ function ShowPhoto(props){
                     </IconButton>
                 </CardActions>
             </Card>
+            <br></br>
+            <Paper style={{ padding: "40px 20px" }}>
+                <Comment comment="Example"/>
+                <Divider variant="fullWidth" style={{ margin: "30px 0" }} />
+                <Comment comment="Example"/>
+                <Divider variant="fullWidth" style={{ margin: "30px 0" }} />
+                <Grid container>
+                    <Grid item xs={10}>
+                        <TextField
+                            id="comment"
+                            name="comment"
+                            label="Comment"
+                            fullWidth
+                            variant="standard"
+                        />
+                    </Grid>
+                    <Grid item xs={2}>
+                    <Button 
+                        sx={{
+                            display: { xs: 'none', md: 'flex' },
+                        }} 
+                        variant="contained" 
+                        endIcon={<SendIcon />}
+                    >
+                        Post
+                    </Button>
+                    <IconButton
+                        sx={{
+                            display: {xs : 'flex', md: 'none' },
+                        }}
+                    >
+                        <SendIcon/>
+                    </IconButton>
+                    </Grid>
+                </Grid>
+            </Paper>
+            <br></br>
             <br></br>
         </Container>
         </>

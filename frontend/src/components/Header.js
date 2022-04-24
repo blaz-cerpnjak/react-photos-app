@@ -19,7 +19,7 @@ import { Icon, Stack } from '@mui/material';
 import AddBoxRoundedIcon from '@mui/icons-material/AddBoxRounded';
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 
-const pages = ['Home', 'Pricing', 'Blog'];
+const pages = ['Home'];
 const settings = ['Upload Photo', 'Profile', 'Account', 'Dashboard', 'Logout'];
 
 function Header(props) {

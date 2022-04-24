@@ -10,7 +10,11 @@ var photoSchema = new Schema({
 	},
 	'views' : Number,
 	'likes' : Number,
-	'datetime' : Date
+	'datetime' : Date,
+	'comments': [{
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'photoComments'
+	}]
 });
 
 module.exports = mongoose.model('photo', photoSchema);
