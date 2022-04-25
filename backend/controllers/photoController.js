@@ -68,6 +68,7 @@ module.exports = {
 			postedBy : req.session.userId,
 			views : 0,
 			likes : 0,
+            hidden: false,
             datetime: new Date()
         });
 
@@ -153,7 +154,8 @@ module.exports = {
 			photo.postedBy = req.body.postedBy ? req.body.postedBy : photo.postedBy;
 			photo.views = req.body.views ? req.body.views : photo.views;
 			photo.likes = req.body.likes ? req.body.likes : photo.likes;
-			
+			photo.reports = req.body.reports ? req.body.reports : photo.reports;
+
             photo.save(function (err, photo) {
                 if (err) {
                     return res.status(500).json({
