@@ -231,9 +231,14 @@ function ShowPhoto(props){
                     alt={photo.name}
                 />
                 <CardContent>
-                    <Typography variant="body2" color="text.secondary">
+                    <Typography>
                         {photo.name}
                     </Typography>
+                    {photo.likes && 
+                    <Typography>
+                        {photo.likes.length} likes
+                    </Typography>
+                    }
                 </CardContent>
                 <CardActions disableSpacing>
                     { userLiked ? 

@@ -192,9 +192,14 @@ function Photo(props){
                     onClick={imageOnClick}
                 />
                 <CardContent>
-                    <Typography variant="body2" color="text.secondary">
+                    <Typography>
                         {props.photo.name}
                     </Typography>
+                    { photo && 
+                    <Typography>
+                        {photo.likes.length} likes
+                    </Typography>
+                    }
                 </CardContent>
                 <CardActions disableSpacing>
                     { userLiked ? 
@@ -225,7 +230,7 @@ function Photo(props){
                 <br></br>
                 <Alert severity="success">
                     <AlertTitle>Success</AlertTitle>
-                    {ImageSuccess}
+                    {imageSuccess}
                 </Alert> 
                 </>
             }
