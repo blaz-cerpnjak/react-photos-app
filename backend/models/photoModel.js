@@ -14,7 +14,9 @@ var photoSchema = new Schema({
 	'comments': [{
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'photoComments'
-	}]
+	}],
+	'reports': Array,
+	'hidden': Boolean
 });
 
 module.exports = mongoose.model('photo', photoSchema);

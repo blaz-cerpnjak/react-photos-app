@@ -53,7 +53,9 @@ module.exports = {
     create: function (req, res) {
         var photoComments = new PhotocommentsModel({
 			comment : req.body.comment,
-			datetime : req.body.datetime
+			datetime : req.body.datetime,
+            reports: 0,
+            hidden: false
         });
 
         photoComments.save(function (err, photoComments) {
