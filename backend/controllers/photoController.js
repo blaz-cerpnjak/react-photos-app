@@ -12,7 +12,7 @@ module.exports = {
      * photoController.list()
      */
     list: function (req, res) {
-        PhotoModel.find()
+        PhotoModel.find({hidden: false})
         .sort('-datetime')
         .populate('postedBy')
         .exec(function (err, photos) {
@@ -34,7 +34,7 @@ module.exports = {
     show: function (req, res) {
         var id = req.params.id;
 
-        PhotoModel.findOne({_id: id})
+        PhotoModel.findOne({_id: id, hidden: false})
         .populate('postedBy')
         .populate({
 			path: 'comments',
@@ -155,6 +155,7 @@ module.exports = {
 			photo.views = req.body.views ? req.body.views : photo.views;
 			photo.likes = req.body.likes ? req.body.likes : photo.likes;
 			photo.reports = req.body.reports ? req.body.reports : photo.reports;
+            photo.hidden = req.body.hidden ? req.body.hidden : req.body.hidden;
 
             photo.save(function (err, photo) {
                 if (err) {

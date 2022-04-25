@@ -99,6 +99,17 @@ function ShowPhoto(props){
         }
 
         reports.push(userContext.user._id);
+        if (reports.length >= 5) {
+            const putRes = await fetch("http://localhost:3001/photos/" + id, {
+                method: "PUT",
+                credentials: "include",
+                headers: { 'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    hidden: true
+                })
+            });
+            return;
+        }
 
         const res = await fetch("http://localhost:3001/photos/" + id, {
             method: "PUT",
