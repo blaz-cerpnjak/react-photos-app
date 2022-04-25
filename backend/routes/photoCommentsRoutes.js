@@ -35,6 +35,6 @@ router.put('/:id', photoCommentsController.update);
 /*
  * DELETE
  */
-router.delete('/:id', photoCommentsController.remove);
+router.delete('/:id', requiresLogin, photoCommentsController.remove);
 
 module.exports = router;

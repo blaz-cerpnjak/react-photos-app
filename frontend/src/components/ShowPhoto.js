@@ -105,7 +105,7 @@ function ShowPhoto(props){
             </Card> }
             <br></br>
             <Paper style={{ padding: "40px 20px" }}>
-                { photo.comments && photo.comments.map(comment=>(<Comment comment={comment} key={comment._id}></Comment>))}
+                { photo.comments && photo.comments.map(comment=>(<Comment photo={photo} comment={comment} key={comment._id}></Comment>))}
                 <Grid container>
                     <Grid item xs={10}>
                         <TextField

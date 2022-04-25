@@ -109,7 +109,7 @@ module.exports = {
      */
     remove: function (req, res) {
         var id = req.params.id;
-
+        console.log(id);
         PhotocommentsModel.findByIdAndRemove(id, function (err, photoComments) {
             if (err) {
                 return res.status(500).json({
