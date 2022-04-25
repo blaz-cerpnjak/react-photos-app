@@ -9,7 +9,7 @@ var photoSchema = new Schema({
 	 	ref: 'user'
 	},
 	'views' : Number,
-	'likes' : Number,
+	'likes' : Array,
 	'datetime' : Date,
 	'comments': [{
 		type: mongoose.Schema.Types.ObjectId,

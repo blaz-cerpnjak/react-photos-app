@@ -5,13 +5,12 @@ import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
-import IconButton, { IconButtonProps } from '@mui/material/IconButton';
+import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import { Alert, AlertTitle, Button, Container, Divider, Grid, Menu, MenuItem, Paper, TextField } from '@mui/material';
 import Comment from './Comment.js'
-import Photo from './Photo.js'
 import SendIcon from '@mui/icons-material/Send';
 import Avatar from '@mui/material/Avatar';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
@@ -29,8 +28,11 @@ function ShowPhoto(props){
     const [isError, showError] = useState(false);
     const [imageError, setImageError] = useState('');
     const [isImageError, showImageError] = useState(false);
+    const [imageSuccess, setImageSuccess] = useState('');
+    const [isImageSuccess, showImageSuccess] = useState(false);
     const [photoMenu, setPhotoMenu] = useState(false);
     const photoMenuOpened = Boolean(photoMenu);
+    const [userLiked, setUserLiked] = useState(false);
 
     const photoMenuClick = (event) => {
         setPhotoMenu(event.currentTarget);
@@ -48,6 +50,20 @@ function ShowPhoto(props){
         }
         getPhoto();
     }, [id]);
+
+    useEffect(function() {
+        const checkUserLiked = async function() {
+            if (photo) {
+                for (let i = 0; i < photo.likes.length; i++) {
+                    if (photo.likes[i] == userContext.user._id) {
+                        setUserLiked(true);
+                        break;
+                    }
+                }
+            }
+        }
+        checkUserLiked();
+    }, [photo]);
 
     async function postComment(e){
         e.preventDefault();
@@ -77,6 +93,41 @@ function ShowPhoto(props){
         } else {
             setComment('');
         }
+    }
+
+    async function likePhoto(e) {
+        e.preventDefault();
+
+        if (!photo)
+            return;
+
+        if (!userContext.user) {
+            setImageError("You must be logged in to like this photo.");
+            showImageError(true);
+            return;
+        }
+
+        var likes = [];
+        for (let i = 0; i < photo.likes.length; i++) {
+            if (userContext.user._id == photo.likes[i] && userLiked)
+                continue;
+            likes.push(photo.likes[i]);
+        }
+        
+        if (!userLiked)
+            likes.push(userContext.user._id);
+
+        const res = await fetch("http://localhost:3001/photos/" + id, {
+            method: "PUT",
+            credentials: "include",
+            headers: { 'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                likes: likes
+            })
+        });
+
+        if (userLiked) setUserLiked(false);
+        else setUserLiked(true)
     }
 
     async function reportPhoto(e) {
@@ -123,10 +174,11 @@ function ShowPhoto(props){
         const data = await res.json();
 
         if(data._id === undefined){
-            setError('Reported.');
+            setError('Report Failed.');
             showError(true);
         } else {
-            setComment('');
+            setImageSuccess('Reported.');
+            showImageSuccess(true);
         }
         
     }
@@ -184,9 +236,15 @@ function ShowPhoto(props){
                     </Typography>
                 </CardContent>
                 <CardActions disableSpacing>
-                    <IconButton aria-label="add to favorites">
-                        <FavoriteIcon />
-                    </IconButton>
+                    { userLiked ? 
+                        <IconButton color="error" onClick={likePhoto}>
+                            <FavoriteIcon/>
+                        </IconButton>
+                    :
+                        <IconButton onClick={likePhoto}>
+                            <FavoriteIcon/>
+                        </IconButton>
+                    }
                     <IconButton aria-label="share">
                         <ShareIcon />
                     </IconButton>
@@ -198,6 +256,15 @@ function ShowPhoto(props){
                 <Alert severity="error">
                     <AlertTitle>Error</AlertTitle>
                     {imageError}
+                </Alert> 
+                </>
+            }
+            { isImageSuccess &&
+                <>
+                <br></br>
+                <Alert severity="success">
+                    <AlertTitle>Success</AlertTitle>
+                    {imageSuccess}
                 </Alert> 
                 </>
             }

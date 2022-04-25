@@ -12,7 +12,8 @@ module.exports = {
      * photoController.list()
      */
     list: function (req, res) {
-        PhotoModel.find({hidden: false})
+        PhotoModel.find()
+        .where({hidden: false})
         .sort('-datetime')
         .populate('postedBy')
         .exec(function (err, photos) {
@@ -34,7 +35,8 @@ module.exports = {
     show: function (req, res) {
         var id = req.params.id;
 
-        PhotoModel.findOne({_id: id, hidden: false})
+        PhotoModel.findOne({_id: id})
+        .where({hidden: false})
         .populate('postedBy')
         .populate({
 			path: 'comments',
@@ -67,7 +69,6 @@ module.exports = {
 			path : "/images/"+req.file.filename,
 			postedBy : req.session.userId,
 			views : 0,
-			likes : 0,
             hidden: false,
             datetime: new Date()
         });
@@ -90,7 +91,6 @@ module.exports = {
      */
      comment: function (req, res) {
         const id = req.body.photoId;
-        console.log("ID: " + id);
         const comment = new PhotoCommentsModel({
             postedBy: req.session.userId,
             photoId: id,
@@ -134,7 +134,6 @@ module.exports = {
      */
     update: function (req, res) {
         var id = req.params.id;
-
         PhotoModel.findOne({_id: id}, function (err, photo) {
             if (err) {
                 return res.status(500).json({
@@ -155,16 +154,21 @@ module.exports = {
 			photo.views = req.body.views ? req.body.views : photo.views;
 			photo.likes = req.body.likes ? req.body.likes : photo.likes;
 			photo.reports = req.body.reports ? req.body.reports : photo.reports;
-            photo.hidden = req.body.hidden ? req.body.hidden : req.body.hidden;
+            if (req.body.hidden && req.body.hidden === true) {
+                photo.hidden = true;
+            } else {
+                photo.hidden = false;
+            }
 
             photo.save(function (err, photo) {
                 if (err) {
+                    console.log(err);
                     return res.status(500).json({
                         message: 'Error when updating photo.',
                         error: err
                     });
                 }
-
+            
                 return res.json(photo);
             });
         });
