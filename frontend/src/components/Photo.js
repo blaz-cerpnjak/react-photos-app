@@ -3,26 +3,27 @@ import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
-import Collapse from '@mui/material/Collapse';
 import Avatar from '@mui/material/Avatar';
 import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { red } from '@mui/material/colors';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useNavigate } from 'react-router-dom';
 
 function Photo(props){
     const navigate = useNavigate()
 
+    const photo = props.photo;
+
     const imageOnClick = (event) => {
         navigate('/photos/' + props.photo._id);
     };
-
+    console.log("Photo props: " + photo);
     return (
-        <>
+        <div>
+            { props.photo ?
              <Card>
                 <CardHeader
                     avatar={
@@ -55,9 +56,9 @@ function Photo(props){
                         <ShareIcon />
                     </IconButton>
                 </CardActions>
-            </Card>
+            </Card> : "" }
             <br></br>
-        </>
+        </div>
     );
 }
 

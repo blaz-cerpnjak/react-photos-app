@@ -11,12 +11,15 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import { Alert, AlertTitle, Button, Container, Divider, Grid, Paper, TextField } from '@mui/material';
 import Comment from './Comment.js'
+import Photo from './Photo.js'
 import SendIcon from '@mui/icons-material/Send';
+import Avatar from '@mui/material/Avatar';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 function ShowPhoto(props){
     const navigate = useNavigate()
     const { id } = useParams();
-
+    
     const [photo, setPhoto] = useState([]);
     const [comment, setComment] = useState('');
     const [error, setError] = useState('')
@@ -26,11 +29,10 @@ function ShowPhoto(props){
         const getPhoto = async function() {
             const res = await fetch("http://localhost:3001/photos/" + id);
             const data = await res.json();
-            console.log(data);
             setPhoto(data);
         }
         getPhoto();
-    }, []);
+    }, [id]);
 
     async function postComment(e){
         e.preventDefault();
@@ -53,7 +55,6 @@ function ShowPhoto(props){
         });
 
         const data = await res.json();
-        console.log(data);
 
         if(data._id === undefined){
             setError('Comment was not posted.');
@@ -66,10 +67,23 @@ function ShowPhoto(props){
     return (
         <>
         <Container>
-            <Card>
+            <br></br>
+            { photo &&
+             <Card>
+                { photo.postedBy && 
                 <CardHeader
-                    
-                />
+                    avatar={
+                        <Avatar src={"http://localhost:3001/"+photo.postedBy.path}></Avatar>
+                    }
+                    action={
+                        <IconButton aria-label="settings">
+                            <MoreVertIcon />
+                        </IconButton>
+                    }
+                    title={photo.postedBy.username}
+                    subheader={photo.datetime}
+                /> 
+                }
                 <CardMedia
                     component="img"
                     image={"http://localhost:3001/"+photo.path}
@@ -88,10 +102,10 @@ function ShowPhoto(props){
                         <ShareIcon />
                     </IconButton>
                 </CardActions>
-            </Card>
+            </Card> }
             <br></br>
             <Paper style={{ padding: "40px 20px" }}>
-                { photo.comments && photo.comments.map(comment=>(<Comment comment={comment}></Comment>))}
+                { photo.comments && photo.comments.map(comment=>(<Comment comment={comment} key={comment._id}></Comment>))}
                 <Grid container>
                     <Grid item xs={10}>
                         <TextField
