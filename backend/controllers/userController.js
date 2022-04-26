@@ -154,7 +154,7 @@ module.exports = {
     },
 
     profile: function(req, res,next) {
-        UserModel.findById(req.session.userId)
+        UserModel.findById(req.params.id)
         .exec(function(error, user) {
             if (error) {
                 return next(error);

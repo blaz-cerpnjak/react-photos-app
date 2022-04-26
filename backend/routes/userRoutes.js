@@ -5,7 +5,7 @@ var multer = require('multer');
 var upload = multer({dest: 'public/images/'});
 
 router.get('/', userController.list);
-router.get('/profile', userController.profile);
+router.get('/profile/:id', userController.profile);
 router.get('/logout', userController.logout);
 router.get('/:id', userController.show);
 

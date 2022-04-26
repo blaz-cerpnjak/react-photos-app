@@ -42,6 +42,10 @@ function ShowPhoto(props){
         setPhotoMenu(null);
     }
 
+    async function userOnClick(e) {
+        navigate('/profile/' + photo.postedBy._id);
+    }
+
     useEffect(function(){
         const getPhoto = async function() {
             const res = await fetch("http://localhost:3001/photos/" + id);
@@ -192,7 +196,10 @@ function ShowPhoto(props){
                 { photo.postedBy && 
                 <CardHeader
                     avatar={
-                        <Avatar src={"http://localhost:3001/"+photo.postedBy.path}></Avatar>
+                        <Avatar 
+                            src={"http://localhost:3001/"+photo.postedBy.path} 
+                            onClick={userOnClick}>
+                        </Avatar>
                     }
                     action={
                         <>

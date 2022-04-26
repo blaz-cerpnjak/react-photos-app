@@ -91,6 +91,10 @@ function Photo(props){
         else setUserLiked(true)
     }
 
+    async function userOnClick(e) {
+        navigate('/profile/' + props.photo.postedBy._id);
+    }
+
     async function reportPhoto(e) {
         e.preventDefault();
 
@@ -153,7 +157,11 @@ function Photo(props){
              <Card>
                 <CardHeader
                     avatar={
-                        <Avatar sx={{ bgcolor: red[500] }} src={"http://localhost:3001/"+props.photo.postedBy.path}></Avatar>
+                        <Avatar 
+                            sx={{ bgcolor: red[500] }} 
+                            src={"http://localhost:3001/"+props.photo.postedBy.path}
+                            onClick={userOnClick}    
+                        />
                     }
                     action={
                         <>
