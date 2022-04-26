@@ -18,6 +18,7 @@ function requiresLogin(req, res, next){
 router.get('/', photoController.list);
 router.get('/:id', photoController.show);
 router.get('/user/:id', photoController.listUserPhotos);
+router.get('/likes/user/:id', photoController.listUserPhotosLikes);
 
 router.post('/', requiresLogin, upload.single('image'), photoController.create);
 router.post('/comment', requiresLogin, photoController.comment);

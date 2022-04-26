@@ -59,6 +59,39 @@ module.exports = {
     },
 
     /**
+     * photoController.getUserPhotosLikes()
+     */
+    listUserPhotosLikes: function (req, res) {
+        var id = req.params.id;
+        PhotoModel.find()
+        .populate({
+            path: 'postedBy',
+            match: {
+                _id: id
+            }
+        })
+        .sort('-datetime')
+        .exec(function (err, photos) {
+            if (err) {
+                return res.status(500).json({
+                    message: 'Error when getting photos.',
+                    error: err
+                });
+            }
+            photos = photos.filter(function(photo) {
+                return photo.postedBy;
+            })
+
+            var likes = 0
+            for (let i = 0; i < photos.length; i++) {
+                likes += photos[i].likes.length;
+            }
+
+            return res.json(likes);
+        });
+    },
+
+    /**
      * photoController.show()
      */
     show: function (req, res) {

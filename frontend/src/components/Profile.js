@@ -1,7 +1,9 @@
 import { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../userContext';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Container, ImageList, ImageListItem, Typography } from '@mui/material';
+import { Avatar, Container, Divider, Grid, ImageList, ImageListItem, List, ListItem, ListItemAvatar, ListItemText, Typography } from '@mui/material';
+import ImageIcon from '@mui/icons-material/Image';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 
 function Profile(){
     const userContext = useContext(UserContext); 
@@ -9,8 +11,9 @@ function Profile(){
     const { id } = useParams();
     const [profile, setProfile] = useState({});
     const [photos, setPhotos] = useState([]);
-
-    useEffect(function(){
+    const [likes, setLikes] = useState([]);
+    
+    useEffect(function() {
         const getProfile = async function(){
             const res = await fetch("http://localhost:3001/users/profile", {credentials: "include"});
             const data = await res.json();
@@ -19,13 +22,22 @@ function Profile(){
         getProfile();
     }, []);
 
-    useEffect(function(){
+    useEffect(function() {
         const getPhotos = async function(){
             const res = await fetch("http://localhost:3001/photos/user/" + id);
             const data = await res.json();
             setPhotos(data);
         }
         getPhotos();
+    }, [id]);
+
+    useEffect(function() {
+        const getLikes = async function() {
+            const res = await fetch("http://localhost:3001/photos/likes/user/" + id);
+            const data = await res.json();
+            setLikes(data);
+        }
+        getLikes();
     }, [id]);
 
     const imageOnClick = (e) => {
@@ -42,6 +54,42 @@ function Profile(){
                 <Typography variant="subtitle1">
                     {profile.email}            
                 </Typography>
+                <List
+                    sx={{
+                        width: '100%',
+                        maxWidth: 360,
+                        bgcolor: 'background.paper',
+                    }}
+                    >
+                    {photos &&
+                    <Grid container>
+                        <Grid>
+                            <ListItem>
+                                <ListItemAvatar>
+                                <Avatar>
+                                    <ImageIcon />
+                                </Avatar>
+                                </ListItemAvatar>
+                                <ListItemText primary={photos.length} secondary="posts" />
+                            </ListItem>
+                        </Grid>
+                        <Grid>
+                            <ListItem>
+                                <ListItemAvatar>
+                                <Avatar>
+                                    <FavoriteIcon/>
+                                </Avatar>
+                                </ListItemAvatar>
+                                {likes &&
+                                <ListItemText primary={likes} secondary="likes" />
+                                }
+                            </ListItem>
+                        </Grid>
+                    </Grid>
+                    }
+                </List>
+                <br></br>
+                <Divider />
                 <br></br>
                 { photos &&
                 <ImageList cols={3}>
