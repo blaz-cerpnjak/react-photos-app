@@ -197,6 +197,7 @@ function ShowPhoto(props){
                 <CardHeader
                     avatar={
                         <Avatar 
+                            alt={photo.postedBy.username}
                             src={"http://localhost:3001/"+photo.postedBy.path} 
                             onClick={userOnClick}>
                         </Avatar>

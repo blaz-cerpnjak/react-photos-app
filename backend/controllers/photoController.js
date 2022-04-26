@@ -14,7 +14,7 @@ module.exports = {
     list: function (req, res) {
         PhotoModel.find()
         .where({hidden: false})
-        .sort('-datetime')
+        .sort('-score')
         .populate('postedBy')
         .exec(function (err, photos) {
             if (err) {
@@ -216,6 +216,7 @@ module.exports = {
 			photo.views = req.body.views ? req.body.views : photo.views;
 			photo.likes = req.body.likes ? req.body.likes : photo.likes;
 			photo.reports = req.body.reports ? req.body.reports : photo.reports;
+            photo.score = req.body.score ? req.body.score : photo.score;
             if (req.body.hidden && req.body.hidden === true) {
                 photo.hidden = true;
             } else {

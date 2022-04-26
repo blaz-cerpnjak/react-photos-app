@@ -158,6 +158,7 @@ function Photo(props){
                 <CardHeader
                     avatar={
                         <Avatar 
+                            alt={props.photo.postedBy.username}
                             sx={{ bgcolor: red[500] }} 
                             src={"http://localhost:3001/"+props.photo.postedBy.path}
                             onClick={userOnClick}    

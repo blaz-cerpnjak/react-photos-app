@@ -1,9 +1,12 @@
 import { Container, Grid } from '@mui/material';
 import { useState, useEffect } from 'react';
 import Photo from './Photo';
+var decay = require('decay')
+var hotScore = decay.hackerHot();
 
 function Photos(){
     const [photos, setPhotos] = useState([]);
+
     useEffect(function(){
         const getPhotos = async function(){
             const res = await fetch("http://localhost:3001/photos");
@@ -12,6 +15,32 @@ function Photos(){
         }
         getPhotos();
     }, []);
+
+    setInterval(function() {
+        var candidates = photos;
+        console.log("Updating photo scores ...");
+        candidates.forEach(function(photo) {
+            photo.score = hotScore(photo.likes.length, new Date(photo.datetime));
+            updatePhoto(photo);
+        });
+        resetPhotos();
+    }, 1000 * 30);
+
+    async function resetPhotos() {
+        const res = await fetch("http://localhost:3001/photos");
+        const data = await res.json();
+        setPhotos(data);
+    }
+
+    async function updatePhoto(photo) {
+        const res = await fetch("http://localhost:3001/photos/" + photo._id, {
+            method: "PUT",
+            headers: { 'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                score: photo.score
+            })
+        });
+    }
 
     return(
         <>

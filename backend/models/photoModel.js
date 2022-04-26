@@ -16,7 +16,8 @@ var photoSchema = new Schema({
 		ref: 'photoComments'
 	}],
 	'reports': Array,
-	'hidden': Boolean
+	'hidden': Boolean,
+	'score': { type: Number, default: 0 }
 });
 
 module.exports = mongoose.model('photo', photoSchema);
