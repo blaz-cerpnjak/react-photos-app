@@ -1,10 +1,14 @@
 import { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../userContext';
-import { Navigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { Container, ImageList, ImageListItem, Typography } from '@mui/material';
 
 function Profile(){
     const userContext = useContext(UserContext); 
+    const navigate = useNavigate()
+    const { id } = useParams();
     const [profile, setProfile] = useState({});
+    const [photos, setPhotos] = useState([]);
 
     useEffect(function(){
         const getProfile = async function(){
@@ -15,12 +19,45 @@ function Profile(){
         getProfile();
     }, []);
 
+    useEffect(function(){
+        const getPhotos = async function(){
+            const res = await fetch("http://localhost:3001/photos/user/" + id);
+            const data = await res.json();
+            setPhotos(data);
+        }
+        getPhotos();
+    }, [id]);
+
+    const imageOnClick = (e) => {
+        navigate('/photos/' + e.target.id);
+    };
+
     return (
         <>
-            {!userContext.user ? <Navigate replace to="/login" /> : ""}
-            <h1>User profile</h1>
-            <p>Username: {profile.username}</p>
-            <p>Email: {profile.email}</p>
+            <Container>
+                <br></br>
+                <Typography variant="h4">
+                    {profile.username}            
+                </Typography>
+                <Typography variant="subtitle1">
+                    {profile.email}            
+                </Typography>
+                <br></br>
+                { photos &&
+                <ImageList cols={3}>
+                    {photos.map((photo) => (
+                        <ImageListItem key={photo._id} onClick={imageOnClick}>
+                            <img 
+                                id={photo._id}
+                                src={"http://localhost:3001/"+photo.path}
+                                alt={photo.name}
+                                loading="lazy"
+                            />
+                        </ImageListItem>
+                    ))}
+                </ImageList>
+                }
+            </Container>
         </>
     );
 }

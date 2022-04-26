@@ -30,7 +30,7 @@ function App() {
             <Route path="/register" element={<Register />}></Route>
             <Route path='/photos/:id' element={<ShowPhoto />}></Route>
             <Route path="/publish" element={<AddPhoto />}></Route>
-            <Route path="/profile" element={<Profile />}></Route>
+            <Route path="/profile/:id" element={<Profile />}></Route>
             <Route path="/logout" element={<Logout />}></Route>
           </Routes>
         </div>

@@ -69,7 +69,7 @@ function Header(props) {
                 navigate('/publish');
                 break;
             case "Profile":
-                navigate('/profile');
+                navigate('/profile/' + userContext.user._id);
                 break;
             case "Logout":
                 navigate('/logout');

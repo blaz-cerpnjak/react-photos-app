@@ -30,6 +30,35 @@ module.exports = {
     },
 
     /**
+     * photoController.listUserPhotos()
+     */
+     listUserPhotos: function (req, res) {
+        var id = req.params.id;
+        PhotoModel.find()
+        .populate({
+            path: 'postedBy',
+            match: {
+                _id: id
+            }
+        })
+        .sort('-datetime')
+        .exec(function (err, photos) {
+            if (err) {
+                return res.status(500).json({
+                    message: 'Error when getting photos.',
+                    error: err
+                });
+            }
+            photos = photos.filter(function(photo) {
+                return photo.postedBy;
+            })
+            var data = [];
+            data.photos = photos;
+            return res.json(photos);
+        });
+    },
+
+    /**
      * photoController.show()
      */
     show: function (req, res) {

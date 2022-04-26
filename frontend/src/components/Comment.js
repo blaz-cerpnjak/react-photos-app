@@ -61,7 +61,9 @@ function Comment(props) {
         <div>
         <Grid container wrap="nowrap" spacing={2}>
             <Grid item>
-                <Avatar alt="Remy Sharp" />
+                {props.photo.postedBy.path &&
+                <Avatar alt={props.comment.postedBy.username}  src={"http://localhost:3001/"+props.comment.postedBy.path}/>
+                }
             </Grid>
             { props.comment.postedBy && 
             <Grid justifyContent="left" item xs zeroMinWidth>
