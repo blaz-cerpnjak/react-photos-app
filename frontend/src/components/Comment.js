@@ -5,15 +5,16 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
-import { useNavigate } from 'react-router-dom';
+import Snackbar from '@mui/material/Snackbar';
 
 function Comment(props) {
-    const navigate = useNavigate()
     const userContext = useContext(UserContext); 
     const [isAuthor, setAuthor] = useState(false);
     const [error, setError] = useState('')
     const [isError, showError] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
+    const [commentRemoved, setCommentRemoved] = useState(false);
+    const [snackbarOpened, setSnackbarOpened] = useState(false);
     const open = Boolean(anchorEl);
 
     const editClick = (event) => {
@@ -22,10 +23,18 @@ function Comment(props) {
     const handleClose = () => {
         setAnchorEl(null);
     };
+    
+    const handleSnackbarClose = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+        
+        setSnackbarOpened(false);
+    };
 
     useEffect(function(){
         const getAuthor = async function() {
-            if (userContext && props.comment.postedBy._id === userContext.user._id) {
+            if (props.comment.postedBy._id === userContext.user._id) {
                 setAuthor(true);
             } else {
                 setAuthor(false);
@@ -49,17 +58,19 @@ function Comment(props) {
             method: "DELETE" 
         });
         const data = await res.json();
-
-        navigate('/photos/' + props.photo._id);
+        setCommentRemoved(true);
+        setSnackbarOpened(true);
     }
 
     return (
         <div>
+        { !commentRemoved &&        
+        <div>
         <Grid container wrap="nowrap" spacing={2}>
             <Grid item>
-                { props.photo.postedBy.username &&
+            { props.photo.postedBy.username &&
                 <Avatar alt={props.comment.postedBy.username}  src={"http://localhost:3001/"+props.comment.postedBy.path}/>
-                }
+            }
             </Grid>
             { props.comment.postedBy && 
             <Grid justifyContent="left" item xs zeroMinWidth>
@@ -107,6 +118,13 @@ function Comment(props) {
             }
         </Grid>
         <Divider variant="fullWidth" style={{ margin: "30px 0" }} />
+        </div>
+        }
+        <Snackbar open={snackbarOpened} autoHideDuration={3000} onClose={handleSnackbarClose}>
+            <Alert onClose={handleSnackbarClose} severity="success" sx={{ width: '100%' }}>
+                Comment was deleted.
+            </Alert>
+        </Snackbar>
         </div>
     );
 }
