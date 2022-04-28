@@ -168,25 +168,29 @@ module.exports = {
                 });
             }
 
-            PhotoModel.findById(id, function (err, photo) {
-                if (err) {
-                    return res.status(500).json({
-                        message: 'Photo not found.',
-                        error: err
-                    });
-                }
-
-                photo.comments.push(photoComment);
-
-                photo.save(function (err) {
-                    if(err) {
-                        console.log(err);
+            PhotoModel.findById(id)
+                .populate('postedBy')
+                .exec(function (err, photo) {
+                    if (err) {
                         return res.status(500).json({
-                            message: 'Error while saving photo data.',
+                            message: 'Photo not found.',
                             error: err
-                        })
+                        });
                     }
-                })
+
+                    photo.comments.push(photoComment);
+
+                    photo.save(function (err) {
+                        if(err) {
+                            console.log(err);
+                            return res.status(500).json({
+                                message: 'Error while saving photo data.',
+                                error: err
+                            })
+                        }
+
+                        return res.json(photo);
+                    })
             });
         });
     },

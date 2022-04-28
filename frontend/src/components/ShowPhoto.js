@@ -17,6 +17,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import FlagRoundedIcon from '@mui/icons-material/FlagRounded';
 import { UserContext } from '../userContext';
+import Photo from './Photo';
 
 function ShowPhoto(props){
     const navigate = useNavigate()
@@ -57,7 +58,7 @@ function ShowPhoto(props){
 
     useEffect(function() {
         const checkUserLiked = async function() {
-            if (photo) {
+            if (photo.likes) {
                 for (let i = 0; i < photo.likes.length; i++) {
                     if (photo.likes[i] == userContext.user._id) {
                         setUserLiked(true);
@@ -88,15 +89,9 @@ function ShowPhoto(props){
                 comment: comment
             })
         });
-
         const data = await res.json();
-
-        if(data._id === undefined){
-            setError('Comment was not posted.');
-            showError(true);
-        } else {
-            setComment('');
-        }
+        setComment('');
+        setPhoto(data);
     }
 
     async function likePhoto(e) {
@@ -191,7 +186,7 @@ function ShowPhoto(props){
         <>
         <Container>
             <br></br>
-            { photo &&
+            { photo.path &&
              <Card>
                 { photo.postedBy && 
                 <CardHeader
@@ -262,7 +257,8 @@ function ShowPhoto(props){
                         <ShareIcon />
                     </IconButton>
                 </CardActions>
-            </Card> }
+            </Card> 
+            }
             { isImageError &&
                 <>
                 <br></br>

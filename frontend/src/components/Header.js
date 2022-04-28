@@ -19,8 +19,7 @@ import { Icon, Stack } from '@mui/material';
 import AddBoxRoundedIcon from '@mui/icons-material/AddBoxRounded';
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 
-const pages = ['Home'];
-const settings = ['Upload Photo', 'Profile', 'Account', 'Dashboard', 'Logout'];
+const settings = ['Upload Photo', 'Profile', 'Logout'];
 
 function Header(props) {
     const userContext = useContext(UserContext); 
@@ -88,7 +87,7 @@ function Header(props) {
                     variant="h6"
                     noWrap
                     component="div"
-                    sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
+                    sx={{ mr: 2, display: { xs: 'none', md: 'flex' }, flexGrow: 1 }}
                 >
                     PHOTOGRAM
                 </Typography>
@@ -122,11 +121,7 @@ function Header(props) {
                             display: { xs: 'block', md: 'none' },
                         }}
                         >
-                        {pages.map((page) => (
-                            <MenuItem id={page} key={page} onClick={handlePageOnClick}>
-                                <Typography textAlign="center">{page}</Typography>
-                            </MenuItem>
-                        ))}
+                            <MenuItem id="Home" onClick={handlePageOnClick}>Home</MenuItem>
                     </Menu>
                 </Box>
                 <CameraIcon sx={{ mr: 2, display: { xs: 'flex', md: 'none' } }} />
@@ -138,18 +133,6 @@ function Header(props) {
                 >
                     PHOTOGRAM
                 </Typography>
-                <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                    {pages.map((page) => (
-                    <Button
-                        id={page}
-                        key={page}
-                        onClick={handlePageOnClick}
-                        sx={{ my: 2, color: 'white', display: 'block' }}
-                    >
-                        {page}
-                    </Button>
-                    ))}
-                </Box>
                 <Stack
                     direction='row'
                     spacing={1}
@@ -165,10 +148,10 @@ function Header(props) {
                 </Stack>
                 <UserContext.Consumer>
                     { context => (context.user ? 
-                        <Box sx={{ flexGrow: 0 }}>
-                            <Tooltip title="Open settings">
+                        <Box>
+                            <Tooltip title="Settings">
                             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                <Avatar src={"http://localhost:3001/"+userContext.user.path}></Avatar>
+                                <Avatar alt={userContext.user.username} src={"http://localhost:3001/"+userContext.user.path}></Avatar>
                             </IconButton>
                             </Tooltip>
                             <Menu

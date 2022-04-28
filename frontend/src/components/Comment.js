@@ -61,7 +61,7 @@ function Comment(props) {
         <div>
         <Grid container wrap="nowrap" spacing={2}>
             <Grid item>
-                {props.photo.postedBy.path &&
+                { props.photo.postedBy.username &&
                 <Avatar alt={props.comment.postedBy.username}  src={"http://localhost:3001/"+props.comment.postedBy.path}/>
                 }
             </Grid>

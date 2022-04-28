@@ -29,7 +29,7 @@ function Photo(props){
     const [isError, showError] = useState(false);
     const [photoMenu, setPhotoMenu] = useState(false);
     const photoMenuOpened = Boolean(photoMenu);
-
+    
     const photoMenuClick = (event) => {
         setPhotoMenu(event.currentTarget);
     }
@@ -155,11 +155,11 @@ function Photo(props){
         <div>
             { props.photo &&
              <Card>
+                { props.photo.postedBy &&
                 <CardHeader
                     avatar={
                         <Avatar 
                             alt={props.photo.postedBy.username}
-                            sx={{ bgcolor: red[500] }} 
                             src={"http://localhost:3001/"+props.photo.postedBy.path}
                             onClick={userOnClick}    
                         />
@@ -194,6 +194,7 @@ function Photo(props){
                     title={props.photo.postedBy.username}
                     subheader={props.photo.datetime}
                 />
+                }
                 <CardMedia
                     component="img"
                     image={"http://localhost:3001/"+props.photo.path}

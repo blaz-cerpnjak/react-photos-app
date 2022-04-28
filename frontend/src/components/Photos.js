@@ -24,7 +24,7 @@ function Photos(){
             updatePhoto(photo);
         });
         resetPhotos();
-    }, 1000 * 30);
+    }, 1000 * 60 * 5);
 
     async function resetPhotos() {
         const res = await fetch("http://localhost:3001/photos");
