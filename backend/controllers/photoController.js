@@ -114,7 +114,7 @@ module.exports = {
 
             if (!photo) {
                 return res.status(404).json({
-                    message: 'No such photo'
+                    message: 'No such photo.'
                 });
             }
 
@@ -259,6 +259,9 @@ module.exports = {
         });
     },
 
+    /**
+     * photoController.remove()
+     */
     publish: function(req, res){
         return res.render('photo/publish');
     }

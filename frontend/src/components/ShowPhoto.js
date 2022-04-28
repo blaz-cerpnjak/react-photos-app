@@ -14,16 +14,16 @@ import Comment from './Comment.js'
 import SendIcon from '@mui/icons-material/Send';
 import Avatar from '@mui/material/Avatar';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import FlagRoundedIcon from '@mui/icons-material/FlagRounded';
 import { UserContext } from '../userContext';
-import Photo from './Photo';
+import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 
 function ShowPhoto(props){
     const navigate = useNavigate()
     const { id } = useParams();
     const userContext = useContext(UserContext); 
     const [photo, setPhoto] = useState([]);
+    const [isAuthor, setAuthor] = useState(false);
     const [comment, setComment] = useState('');
     const [error, setError] = useState('')
     const [isError, showError] = useState(false);
@@ -55,6 +55,17 @@ function ShowPhoto(props){
         }
         getPhoto();
     }, [id]);
+
+    useEffect(function(){
+        const getAuthor = async function() {
+            if (userContext && photo.postedBy._id === userContext.user._id) {
+                setAuthor(true);
+            } else {
+                setAuthor(false);
+            }
+        }
+        getAuthor();
+    }, [photo]);
 
     useEffect(function() {
         const checkUserLiked = async function() {
@@ -127,6 +138,17 @@ function ShowPhoto(props){
 
         if (userLiked) setUserLiked(false);
         else setUserLiked(true)
+    }
+
+    async function removePhoto(e) {
+        e.preventDefault();
+
+        const res = await fetch("http://localhost:3001/photos/" + id, {
+            method: "DELETE",
+            credentials: "include",
+        }); 
+        
+        navigate("/");
     }
 
     async function reportPhoto(e) {
@@ -221,6 +243,12 @@ function ShowPhoto(props){
                                 <FlagRoundedIcon/>
                                 Report
                             </MenuItem>
+                            { isAuthor &&
+                                <MenuItem onClick={removePhoto}>
+                                    <DeleteRoundedIcon/>
+                                    Remove
+                                </MenuItem>
+                            }
                         </Menu>
                         </>
                     }

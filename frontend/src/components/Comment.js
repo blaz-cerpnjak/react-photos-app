@@ -48,13 +48,9 @@ function Comment(props) {
             credentials: 'include',
             method: "DELETE" 
         });
+        const data = await res.json();
 
-        if (res.ok) {
-            navigate('/photos/' + props.photo._id);
-        } else {
-            showError(true);
-            setError("Comment was not deleted.");
-        }
+        navigate('/photos/' + props.photo._id);
     }
 
     return (

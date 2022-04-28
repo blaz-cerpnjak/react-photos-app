@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var Schema   = mongoose.Schema;
+var photoModel = require('./photoModel');
 
 var photoCommentsSchema = new Schema({
 	'comment' : String,
