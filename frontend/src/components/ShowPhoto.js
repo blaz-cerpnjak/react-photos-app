@@ -17,6 +17,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import FlagRoundedIcon from '@mui/icons-material/FlagRounded';
 import { UserContext } from '../userContext';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
+import Snackbar from '@mui/material/Snackbar';
 
 function ShowPhoto(props){
     const navigate = useNavigate()
@@ -29,11 +30,11 @@ function ShowPhoto(props){
     const [isError, showError] = useState(false);
     const [imageError, setImageError] = useState('');
     const [isImageError, showImageError] = useState(false);
-    const [imageSuccess, setImageSuccess] = useState('');
-    const [isImageSuccess, showImageSuccess] = useState(false);
     const [photoMenu, setPhotoMenu] = useState(false);
     const photoMenuOpened = Boolean(photoMenu);
-    const [userLiked, setUserLiked] = useState(false);
+    const [userLiked, setUserLiked] = useState(false);    
+    const [snackbarOpened, setSnackbarOpened] = useState(false);
+    const [snackbarText, setSnackbarText] = useState('');
 
     const photoMenuClick = (event) => {
         setPhotoMenu(event.currentTarget);
@@ -42,6 +43,14 @@ function ShowPhoto(props){
     const photoMenuClose = () => {
         setPhotoMenu(null);
     }
+
+    const handleSnackbarClose = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+        
+        setSnackbarOpened(false);
+    };
 
     async function userOnClick(e) {
         navigate('/profile/' + photo.postedBy._id);
@@ -65,7 +74,7 @@ function ShowPhoto(props){
             }
         }
         getAuthor();
-    }, [photo]);
+    }, [photo, userContext]);
 
     useEffect(function() {
         const checkUserLiked = async function() {
@@ -101,8 +110,9 @@ function ShowPhoto(props){
             })
         });
         const data = await res.json();
+        console.log(data);
         setComment('');
-        setPhoto(data);
+        
     }
 
     async function likePhoto(e) {
@@ -146,8 +156,7 @@ function ShowPhoto(props){
         const res = await fetch("http://localhost:3001/photos/" + id, {
             method: "DELETE",
             credentials: "include",
-        }); 
-        
+        });
         navigate("/");
     }
 
@@ -198,8 +207,8 @@ function ShowPhoto(props){
             setError('Report Failed.');
             showError(true);
         } else {
-            setImageSuccess('Reported.');
-            showImageSuccess(true);
+            setSnackbarOpened(true);
+            setSnackbarText("Photo reported.");
         }
         
     }
@@ -296,18 +305,11 @@ function ShowPhoto(props){
                 </Alert> 
                 </>
             }
-            { isImageSuccess &&
-                <>
-                <br></br>
-                <Alert severity="success">
-                    <AlertTitle>Success</AlertTitle>
-                    {imageSuccess}
-                </Alert> 
-                </>
-            }
             <br></br>
             <Paper style={{ padding: "40px 20px" }}>
-                { photo.comments && photo.comments.map(comment=>(<Comment photo={photo} comment={comment} key={comment._id}></Comment>))}
+                { photo.comments && 
+                    photo.comments.map(comment => (<Comment key={comment.id} photo={photo} comment={comment}/>))
+                }
                 <Grid container>
                     <Grid item xs={10}>
                         <TextField
@@ -352,6 +354,11 @@ function ShowPhoto(props){
                     : ""
                 }
             </Paper>
+            <Snackbar open={snackbarOpened} autoHideDuration={3000} onClose={handleSnackbarClose}>
+                <Alert onClose={handleSnackbarClose} severity="success" sx={{ width: '100%' }}>
+                    {snackbarText}
+                </Alert>
+            </Snackbar>
             <br></br>
             <br></br>
         </Container>

@@ -1,8 +1,8 @@
-import { Container, Grid } from '@mui/material';
+import { Alert, Container, Grid } from '@mui/material';
 import { useState, useEffect } from 'react';
 import Photo from './Photo';
 var decay = require('decay')
-var hotScore = decay.hackerHot();
+var hotScore = decay.redditHot();
 
 function Photos(){
     const [photos, setPhotos] = useState([]);
@@ -20,7 +20,7 @@ function Photos(){
         var candidates = photos;
         console.log("Updating photo scores ...");
         candidates.forEach(function(photo) {
-            photo.score = hotScore(photo.likes.length, new Date(photo.datetime));
+            photo.score = hotScore(photo.likes.length, photo.reports.length, new Date(photo.datetime));
             updatePhoto(photo);
         });
         resetPhotos();

@@ -15,21 +15,21 @@ import { UserContext } from '../userContext';
 import { useContext, useState, useEffect } from 'react';
 import { Alert, AlertTitle, Menu, MenuItem } from '@mui/material';
 import FlagRoundedIcon from '@mui/icons-material/FlagRounded';
+import Snackbar from '@mui/material/Snackbar';
 
 function Photo(props){
     const userContext = useContext(UserContext); 
     const navigate = useNavigate()
     const photo = props.photo;
     const [userLiked, setUserLiked] = useState('');
-    const [imageError, setImageError] = useState('');
-    const [isImageError, showImageError] = useState(false);
-    const [imageSuccess, setImageSuccess] = useState('');
-    const [isImageSuccess, showImageSuccess] = useState(false);
+    const [snackbarErrorOpened, setSnackbarErrorOpened] = useState(false);
     const [error, setError] = useState('')
     const [isError, showError] = useState(false);
     const [photoMenu, setPhotoMenu] = useState(false);
     const photoMenuOpened = Boolean(photoMenu);
-    
+    const [snackbarOpened, setSnackbarOpened] = useState(false);
+    const [snackbarText, setSnackbarText] = useState('');
+
     const photoMenuClick = (event) => {
         setPhotoMenu(event.currentTarget);
     }
@@ -37,6 +37,14 @@ function Photo(props){
     const photoMenuClose = () => {
         setPhotoMenu(null);
     }
+
+    const handleSnackbarClose = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+        setSnackbarOpened(false);
+        setSnackbarErrorOpened(false);
+    };
 
     const imageOnClick = (event) => {
         navigate('/photos/' + props.photo._id);
@@ -63,8 +71,8 @@ function Photo(props){
             return;
 
         if (!userContext.user) {
-            setImageError("You must be logged in to like this photo.");
-            showImageError(true);
+            setSnackbarText("You must be logged in to be able to like photos.");
+                setSnackbarErrorOpened(true);
             return;
         }
 
@@ -102,16 +110,16 @@ function Photo(props){
             return;
 
         if (!userContext.user) {
-            setImageError("You must be logged in to report photos.");
-            showImageError(true);
+            setSnackbarText("You must be logged in to be able to report photos.");
+                setSnackbarErrorOpened(true);
             return;
         }
 
         var reports = [];
         for (let i = 0; i < photo.reports.length; i++) {
             if (photo.reports[i] == userContext.user._id) {
-                setImageError("You've already reported this photo.");
-                showImageError(true);
+                setSnackbarText("You've already reported this photo.");
+                setSnackbarErrorOpened(true);
                 return;
             }
             reports.push(photo.reports[i]);
@@ -145,8 +153,8 @@ function Photo(props){
             setError('Report Failed.');
             showError(true);
         } else {
-            setImageSuccess('Reported.');
-            showImageSuccess(true);
+            setSnackbarOpened(true);
+            setSnackbarText('Photo reported.');
         }
         
     }
@@ -226,35 +234,27 @@ function Photo(props){
                     </IconButton>
                 </CardActions>
             </Card>}
-            { isImageError &&
-                <>
-                <br></br>
-                <Alert severity="error">
-                    <AlertTitle>Error</AlertTitle>
-                    {imageError}
-                </Alert> 
-                </>
-            }
-            { isImageSuccess &&
-                <>
-                <br></br>
-                <Alert severity="success">
-                    <AlertTitle>Success</AlertTitle>
-                    {imageSuccess}
-                </Alert> 
-                </>
-            }
             <br></br>
             { isError ? 
-                    <>
-                    <br></br>
-                    <Alert severity="error">
-                        <AlertTitle>Error</AlertTitle>
-                        {error} <strong>Please try again!</strong>
-                    </Alert> 
-                    </>
-                    : ""
-                }
+            <>
+            <br></br>
+            <Alert severity="error">
+                <AlertTitle>Error</AlertTitle>
+                {error} <strong>Please try again!</strong>
+            </Alert> 
+            </>
+            : ""
+            }
+            <Snackbar open={snackbarOpened} autoHideDuration={3000} onClose={handleSnackbarClose}>
+                <Alert onClose={handleSnackbarClose} severity="success" sx={{ width: '100%' }}>
+                    {snackbarText}
+                </Alert>
+            </Snackbar>
+            <Snackbar open={snackbarErrorOpened} autoHideDuration={3000} onClose={handleSnackbarClose}>
+                <Alert onClose={handleSnackbarClose} severity="error" sx={{ width: '100%' }}>
+                    {snackbarText}
+                </Alert>
+            </Snackbar>
         </div>
     );
 }

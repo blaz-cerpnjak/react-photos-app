@@ -180,7 +180,7 @@ module.exports = {
 
                     photo.comments.push(photoComment);
 
-                    photo.save(function (err) {
+                    photo.save(function (err, photo) {
                         if(err) {
                             console.log(err);
                             return res.status(500).json({
