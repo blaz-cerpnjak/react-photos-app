@@ -21,6 +21,17 @@ function Login(){
 
     async function Login(e){
         e.preventDefault();
+
+        if (!username) {
+            setError("Invalid username.");
+            showError(true);
+            return;
+        } else if (!password) {
+            setError("Invalid password.");
+            showError(true);
+            return;
+        }
+
         const res = await fetch("http://localhost:3001/users/login", {
             method: "POST",
             credentials: "include",
@@ -36,7 +47,7 @@ function Login(){
         } else {
             setUsername("");
             setPassword("");
-            setError("Invalid username or password");
+            setError("Invalid username or password.");
             showError(true);
         }
     }
@@ -106,16 +117,6 @@ function Login(){
                                 onChange={(e)=>(setPassword(e.target.value))}
                                 autoComplete="current-password"
                             />
-                            { isError ? 
-                                <>
-                                <br></br>
-                                <Alert severity="error">
-                                    <AlertTitle>Error</AlertTitle>
-                                    {error} <strong>Please try again!</strong>
-                                </Alert> 
-                                </>
-                                : ""
-                            }
                             <Button
                                 type="submit"
                                 fullWidth
@@ -131,6 +132,16 @@ function Login(){
                                 </Link>
                                 </Grid>
                             </Grid>
+                            { isError ? 
+                                <>
+                                <br></br>
+                                <Alert severity="error">
+                                    <AlertTitle>Error</AlertTitle>
+                                    {error} <strong>Please try again!</strong>
+                                </Alert> 
+                                </>
+                                : ""
+                            }
                         </Box>
                     </Box>
                 </Grid>

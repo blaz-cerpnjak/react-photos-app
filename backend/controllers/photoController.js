@@ -189,7 +189,7 @@ module.exports = {
                             })
                         }
 
-                        return res.json(photo);
+                        return res.status(201).json(photo);
                     })
             });
         });

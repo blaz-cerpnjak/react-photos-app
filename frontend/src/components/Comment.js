@@ -6,6 +6,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import Snackbar from '@mui/material/Snackbar';
+import Moment from 'moment';
 
 function Comment(props) {
     const userContext = useContext(UserContext); 
@@ -16,6 +17,7 @@ function Comment(props) {
     const [commentRemoved, setCommentRemoved] = useState(false);
     const [snackbarOpened, setSnackbarOpened] = useState(false);
     const open = Boolean(anchorEl);
+    const datetime = props.comment.datetime;
 
     const editClick = (event) => {
       setAnchorEl(event.currentTarget);
@@ -75,7 +77,7 @@ function Comment(props) {
             { props.comment.postedBy && 
             <Grid justifyContent="left" item xs zeroMinWidth>
                 <h4 style={{ margin: 0, textAlign: "left" }}>{props.comment.postedBy.username}</h4>
-                <p style={{ textAlign: "left", color: "gray" }}>{props.comment.datetime}</p>
+                <p style={{ textAlign: "left", color: "gray" }}>{Moment(datetime).format('d.MM.yyyy HH:mm')}</p>
                 <p style={{ textAlign: "left", color: "black" }}>{props.comment.comment}</p>
             </Grid>
             }

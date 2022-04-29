@@ -48,46 +48,53 @@ function Profile(){
         <>
             <Container>
                 <br></br>
-                <Typography variant="h4">
-                    {profile.username}            
-                </Typography>
-                <Typography variant="subtitle1">
-                    {profile.email}            
-                </Typography>
-                <List
-                    sx={{
-                        width: '100%',
-                        maxWidth: 360,
-                        bgcolor: 'background.paper',
-                    }}
-                    >
-                    {photos &&
-                    <Grid container>
-                        <Grid>
-                            <ListItem>
-                                <ListItemAvatar>
-                                <Avatar>
-                                    <ImageIcon />
-                                </Avatar>
-                                </ListItemAvatar>
-                                <ListItemText primary={photos.length} secondary="posts" />
-                            </ListItem>
-                        </Grid>
-                        <Grid>
-                            <ListItem>
-                                <ListItemAvatar>
-                                <Avatar>
-                                    <FavoriteIcon/>
-                                </Avatar>
-                                </ListItemAvatar>
-                                {likes &&
-                                <ListItemText primary={likes} secondary="likes" />
-                                }
-                            </ListItem>
-                        </Grid>
+                <Grid container spacing={2}>
+                    <Grid item>
+                        <Avatar
+                            alt={profile.username}
+                            src={"http://localhost:3001/"+profile.path}
+                            sx={{ width: '24vh', height: '24vh' }}
+                        />
                     </Grid>
-                    }
-                </List>
+                    <Grid item sm container>
+                            <Grid item xs>
+                                <Typography gutterBottom variant="h4" component="div">
+                                    {profile.firstname} {profile.lastname}
+                                </Typography>
+                                <Typography variant="h5" gutterBottom>
+                                    {profile.username}
+                                </Typography>
+                            </Grid>
+                    </Grid>
+                </Grid>
+                {photos &&
+                <Grid container>
+                    <Grid>
+                        <ListItem>
+                            <ListItemAvatar>
+                            <Avatar>
+                                <ImageIcon />
+                            </Avatar>
+                            </ListItemAvatar>
+                            <ListItemText primary={photos.length} secondary="posts" />
+                        </ListItem>
+                    </Grid>
+                    <Grid>
+                        <ListItem>
+                            <ListItemAvatar>
+                            <Avatar>
+                                <FavoriteIcon/>
+                            </Avatar>
+                            </ListItemAvatar>
+                            {likes ?
+                            <ListItemText primary={likes} secondary="likes" />
+                            :
+                            <ListItemText primary="0" secondary="likes" />
+                            }
+                        </ListItem>
+                    </Grid>
+                </Grid>
+                }
                 <br></br>
                 <Divider />
                 <br></br>

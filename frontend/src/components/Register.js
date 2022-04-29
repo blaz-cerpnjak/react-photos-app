@@ -20,10 +20,12 @@ const Input = styled('input')({
 });
 
 function Register() {
-    const [email, setEmail] = useState([]);
-    const [username, setUsername] = useState([]);
-    const [password, setPassword] = useState([]);
-    const [error, setError] = useState([]);
+    const [email, setEmail] = useState('');
+    const [firstname, setFirstname] = useState('');
+    const [lastname, setLastname] = useState('');
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
     const [isError, showError] = useState(false);
     const [file, setFile] = useState('');
     const userContext = useContext(UserContext); 
@@ -32,7 +34,15 @@ function Register() {
     async function Register(e){
         e.preventDefault();
 
-        if (!email) {
+        if (!firstname) {
+            showError(true);
+            setError("Firstname cannot be empty.");
+            return;
+        } else if (!lastname) {
+            showError(true);
+            setError("Lastname cannot be empty.");
+            return;
+        } else if (!email) {
             showError(true);
             setError("Email cannot be empty.");
             return;
@@ -47,6 +57,8 @@ function Register() {
         }
 
         const formData = new FormData();
+        formData.append('firstname', firstname);
+        formData.append('lastname', lastname);
         formData.append('username', username);
         formData.append('email', email);
         formData.append('password', password);
@@ -107,11 +119,51 @@ function Register() {
                  <Typography component="h1" variant="h5">
                      Sign Up
                  </Typography>
+                 <Box
+                    component="form"
+                    sx={{
+                        width: '100%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        '& > :not(style)': { mr: 1, ml: 1, mt: 2 },
+                    }}
+                    >
+                    <TextField
+                        fullWidth
+                        required
+                        label="Firstname"
+                        id="firstname"
+                        name="firstname"
+                        value={firstname} 
+                        onChange={(e)=>(setFirstname(e.target.value))}
+                        autoFocus
+                    />
+                    <TextField
+                        fullWidth
+                        required
+                        label="Lastname"
+                        id="lastname"
+                        name="lastname"
+                        value={lastname} 
+                        onChange={(e)=>(setLastname(e.target.value))}
+                    />
+                </Box>
                  <Box 
                      component="form" 
-                     noValidate sx={{ mt: 1 }}
+                     noValidate sx={{ m: 1 }}
                      onSubmit={Register}    
                  >
+                    <TextField
+                         margin="normal"
+                         required
+                         fullWidth
+                         id="username"
+                         label="Username"
+                         name="username"
+                         value={username} 
+                         onChange={(e)=>(setUsername(e.target.value))}
+                         autoComplete="current-username"
+                     />
                      <TextField
                          margin="normal"
                          required
@@ -122,19 +174,6 @@ function Register() {
                          value={email} 
                          onChange={(e)=>(setEmail(e.target.value))}
                          autoComplete="current-email"
-                         autoFocus
-                     />
-                     <TextField
-                         margin="normal"
-                         required
-                         fullWidth
-                         id="username"
-                         label="Username"
-                         name="username"
-                         value={username} 
-                         onChange={(e)=>(setUsername(e.target.value))}
-                         autoComplete="current-username"
-                         autoFocus
                      />
                      <TextField
                          margin="normal"

@@ -82,7 +82,9 @@ function Header(props) {
         <AppBar position="static">
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
-                <CameraIcon sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }} />
+                <IconButton onClick={handleHomeOnClick}>
+                    <CameraIcon sx={{display: { xs: 'none', md: 'flex' }, color: 'white' }}/>
+                </IconButton>
                 <Typography
                     variant="h6"
                     noWrap
@@ -124,7 +126,9 @@ function Header(props) {
                             <MenuItem id="Home" onClick={handlePageOnClick}>Home</MenuItem>
                     </Menu>
                 </Box>
-                <CameraIcon sx={{ mr: 2, display: { xs: 'flex', md: 'none' } }} />
+                <IconButton onClick={handleHomeOnClick}>
+                    <CameraIcon sx={{ display: { xs: 'flex', md: 'none' }, color: 'white' }} />
+                </IconButton>
                 <Typography
                     variant="h6"
                     noWrap

@@ -60,6 +60,8 @@ module.exports = {
         }
 
         var user = new UserModel({
+            firstname : req.body.firstname,
+            lastname : req.body.lastname,
 			username : req.body.username,
 			password : req.body.password,
 			email : req.body.email,
@@ -98,6 +100,8 @@ module.exports = {
                 });
             }
 
+            user.firstname = req.body.firstname ? req.body.firstname : user.firstname;
+            user.lastname = req.body.lastname ? req.body.lastname : user.lastname;
             user.username = req.body.username ? req.body.username : user.username;
 			user.password = req.body.password ? req.body.password : user.password;
 			user.email = req.body.email ? req.body.email : user.email;

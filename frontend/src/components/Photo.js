@@ -16,6 +16,7 @@ import { useContext, useState, useEffect } from 'react';
 import { Alert, AlertTitle, Menu, MenuItem } from '@mui/material';
 import FlagRoundedIcon from '@mui/icons-material/FlagRounded';
 import Snackbar from '@mui/material/Snackbar';
+import Moment from 'moment';
 
 function Photo(props){
     const userContext = useContext(UserContext); 
@@ -29,6 +30,7 @@ function Photo(props){
     const photoMenuOpened = Boolean(photoMenu);
     const [snackbarOpened, setSnackbarOpened] = useState(false);
     const [snackbarText, setSnackbarText] = useState('');
+    const datetime = photo.datetime;
 
     const photoMenuClick = (event) => {
         setPhotoMenu(event.currentTarget);
@@ -200,7 +202,7 @@ function Photo(props){
                         </>
                     }
                     title={props.photo.postedBy.username}
-                    subheader={props.photo.datetime}
+                    subheader={Moment(datetime).format('d.MM.yyyy HH:mm')}
                 />
                 }
                 <CardMedia
