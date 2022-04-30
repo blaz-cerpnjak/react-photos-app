@@ -34,8 +34,6 @@ function ShowPhoto(props){
     const [snackbarErrorOpened, setSnackbarOpenedError] = useState(false);
     const [snackbarText, setSnackbarText] = useState('');
     const [datetime, setDatetime] = useState('');
-    const [commentPosted, setCommentPosted] = useState(false);
-    const [comments, setComments] = useState([]);
 
     const photoMenuClick = (event) => {
         setPhotoMenu(event.currentTarget);
@@ -63,7 +61,6 @@ function ShowPhoto(props){
             const res = await fetch("http://localhost:3001/photos/" + id);
             const data = await res.json();
             setPhoto(data);
-            setComments(data.comments);
             setDatetime(data.datetime);
         }
         getPhoto();
@@ -122,7 +119,7 @@ function ShowPhoto(props){
         const data = await res.json();
         console.log(data);
         setComment('');
-        setComments(data.comments);
+        setPhoto(data);
     }
 
     async function likePhoto(e) {
@@ -227,7 +224,6 @@ function ShowPhoto(props){
 
     return (
         <>
-        {commentPosted ? <Navigate replace to={"/photos/"+id}/> : ""}
         <Container>
             <br></br>
             { photo.path &&
@@ -311,8 +307,8 @@ function ShowPhoto(props){
             }
             <br></br>
             <Paper style={{ padding: "40px 20px" }}>
-                { photo && comments && 
-                    comments.map(comment => (<Comment key={comment.id} photo={photo} comment={comment}/>))
+                { photo && photo.comments && 
+                    photo.comments.map(comment => (<Comment key={comment.id} photo={photo} comment={comment}/>))
                 }
                 <Grid container>
                     <Grid item xs={10}>

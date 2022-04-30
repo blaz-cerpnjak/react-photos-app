@@ -13,7 +13,7 @@ module.exports = {
      */
     list: function (req, res) {
         PhotoModel.find()
-        .where({hidden: false})
+        .where({ hidden: false })
         .sort('-score')
         .populate('postedBy')
         .exec(function (err, photos) {
@@ -35,6 +35,8 @@ module.exports = {
      listUserPhotos: function (req, res) {
         var id = req.params.id;
         PhotoModel.find()
+        .where({ hidden: false })
+        .sort('-score')
         .populate({
             path: 'postedBy',
             match: {
@@ -98,7 +100,7 @@ module.exports = {
         var id = req.params.id;
 
         PhotoModel.findOne({_id: id})
-        .where({hidden: false})
+        .where({ hidden: false })
         .populate('postedBy')
         .populate({
 			path: 'comments',
@@ -144,7 +146,6 @@ module.exports = {
             }
 
             return res.status(201).json(photo);
-            //return res.redirect('/photos');
         });
     },
 
@@ -153,6 +154,7 @@ module.exports = {
      */
      comment: function (req, res) {
         const id = req.body.photoId;
+
         const comment = new PhotoCommentsModel({
             postedBy: req.session.userId,
             photoId: id,
@@ -168,8 +170,12 @@ module.exports = {
                 });
             }
 
-            PhotoModel.findById(id)
+            PhotoModel.findOne({ _id: id })
                 .populate('postedBy')
+                .populate({
+                    path: 'comments',
+                    populate: { path: 'postedBy' }
+                })
                 .exec(function (err, photo) {
                     if (err) {
                         return res.status(500).json({
@@ -189,8 +195,22 @@ module.exports = {
                             })
                         }
 
-                        return res.status(201).json(photo);
-                    })
+                        PhotoModel.findOne({ _id: id })
+                            .populate('postedBy')
+                            .populate({
+                                path: 'comments',
+                                populate: { path: 'postedBy' }
+                            })
+                            .exec(function (err, photo) {
+                                if (err) {
+                                    return res.status(500).json({
+                                        message: 'Photo not found.',
+                                        error: err
+                                    });
+                                }
+                                return res.status(201).json(photo);
+                            });
+                    });
             });
         });
     },
