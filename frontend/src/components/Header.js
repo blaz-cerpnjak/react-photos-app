@@ -18,6 +18,7 @@ import CameraIcon from '@mui/icons-material/PhotoCamera';
 import { Icon, Stack } from '@mui/material';
 import AddBoxRoundedIcon from '@mui/icons-material/AddBoxRounded';
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
+import Zoom from '@mui/material/Zoom';
 
 const settings = ['Upload Photo', 'Profile', 'Logout'];
 
@@ -82,9 +83,11 @@ function Header(props) {
         <Box sx={{ borderBottom: 1, borderColor: 'divider', background: 'white' }}>
         <Container>
             <Toolbar disableGutters>
-            <IconButton onClick={handleHomeOnClick}>
-                <CameraIcon sx={{display: { xs: 'none', md: 'flex' }, color: 'black' }}/>
-            </IconButton>
+            <Tooltip TransitionComponent={Zoom} title="Home">
+                <IconButton onClick={handleHomeOnClick}>
+                    <CameraIcon sx={{display: { xs: 'none', md: 'flex' }, color: 'black' }}/>
+                </IconButton>
+            </Tooltip>
             <Typography
                 variant="h6"
                 noWrap
@@ -143,12 +146,16 @@ function Header(props) {
                 mr={2}
                 sx={{ display: { xs: 'none', md: 'flex' } }}
             >
-                <IconButton onClick={handleHomeOnClick}>
-                    <HomeRoundedIcon sx={{ color: 'black' }}/>
-                </IconButton>
-                <IconButton onClick={handleUploadOnClick}>
-                    <AddBoxRoundedIcon sx={{ color: 'black' }}/>
-                </IconButton>
+                <Tooltip TransitionComponent={Zoom} title="Home">
+                    <IconButton onClick={handleHomeOnClick}>
+                        <HomeRoundedIcon sx={{ color: 'black' }}/>
+                    </IconButton>
+                </Tooltip>
+                <Tooltip TransitionComponent={Zoom} title="Upload">
+                    <IconButton onClick={handleUploadOnClick}>
+                        <AddBoxRoundedIcon sx={{ color: 'black' }}/>
+                    </IconButton>
+                </Tooltip>
             </Stack>
             <UserContext.Consumer>
                 { context => (context.user ? 
