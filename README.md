@@ -3,7 +3,8 @@
 Photogram is a simple web app, similar to Instagram.
 
 ## Implemented functionality: 
-- sign in/sign up,
+- user authentication (sign up/sign in),
+- user profile images,
 - uploading photos,
 - browsing other users photos,
 - liking and commenting photos,
