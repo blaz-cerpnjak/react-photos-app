@@ -12,6 +12,7 @@ function Comment(props) {
     const userContext = useContext(UserContext); 
     const [isAuthor, setAuthor] = useState(false);
     const [error, setError] = useState('')
+    const [comment, setComment] = useState([]);
     const [isError, showError] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
     const [commentRemoved, setCommentRemoved] = useState(false);
@@ -62,23 +63,24 @@ function Comment(props) {
         const data = await res.json();
         setCommentRemoved(true);
         setSnackbarOpened(true);
+        props.onRemove();
     }
 
     return (
-        <div>
+        <>
         { !commentRemoved &&        
         <div>
         <Grid container wrap="nowrap" spacing={2}>
             <Grid item>
             { props.photo.postedBy.username &&
-                <Avatar alt={props.comment.postedBy.username}  src={"http://localhost:3001/"+props.comment.postedBy.path}/>
+                <Avatar alt={ props.comment.postedBy.username }  src={"http://localhost:3001/"+props.comment.postedBy.path}/>
             }
             </Grid>
             { props.comment.postedBy && 
             <Grid justifyContent="left" item xs zeroMinWidth>
-                <h4 style={{ margin: 0, textAlign: "left" }}>{props.comment.postedBy.username}</h4>
+                <h4 style={{ margin: 0, textAlign: "left" }}>{ props.comment.postedBy.username }</h4>
                 <p style={{ textAlign: "left", color: "gray" }}>{Moment(datetime).format('d.MM.yyyy HH:mm')}</p>
-                <p style={{ textAlign: "left", color: "black" }}>{props.comment.comment}</p>
+                <p style={{ textAlign: "left", color: "black" }}>{ props.comment.comment }</p>
             </Grid>
             }
             { isAuthor &&
@@ -127,7 +129,7 @@ function Comment(props) {
                 Comment was deleted.
             </Alert>
         </Snackbar>
-        </div>
+        </>
     );
 }
 

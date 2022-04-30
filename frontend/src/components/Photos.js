@@ -46,7 +46,8 @@ function Photos(){
         <>
             <Container>
                 <br></br>
-                <h3>Photos:</h3>
+                <br></br>
+                <br></br>
                 <br></br>
                 <Grid 
                     container

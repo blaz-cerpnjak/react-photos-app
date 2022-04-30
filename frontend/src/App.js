@@ -9,6 +9,7 @@ import Profile from "./components/Profile";
 import Logout from "./components/Logout";
 import AddPhoto from "./components/AddPhoto";
 import ShowPhoto from "./components/ShowPhoto"
+import { Box } from '@mui/material';
 
 function App() {
   const [user, setUser] = useState(localStorage.user ? JSON.parse(localStorage.user) : null);
@@ -22,8 +23,8 @@ function App() {
         user: user,
         setUserContext: updateUserData
       }}>
-        <div>
-          <Header title="My application"></Header>
+        <Box sx={{ height: '100vh', background: '#f8f9fa' }}>
+          <Header/>
           <Routes>
             <Route path="/" exact element={<Photos />}></Route>
             <Route path="/login" exact element={<Login />}></Route>
@@ -33,7 +34,7 @@ function App() {
             <Route path="/profile/:id" element={<Profile />}></Route>
             <Route path="/logout" element={<Logout />}></Route>
           </Routes>
-        </div>
+        </Box>
       </UserContext.Provider>
     </BrowserRouter>
   );

@@ -45,75 +45,76 @@ function Profile(){
     };
 
     return (
-        <>
-            <Container>
-                <br></br>
-                <Grid container spacing={2}>
-                    <Grid item>
-                        <Avatar
-                            alt={profile.username}
-                            src={"http://localhost:3001/"+profile.path}
-                            sx={{ width: '24vh', height: '24vh' }}
+        <Container sx={{ background: '#f8f9fa' }}>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+            <Grid container spacing={2}>
+                <Grid item>
+                    <Avatar
+                        alt={profile.username}
+                        src={"http://localhost:3001/"+profile.path}
+                        sx={{ width: '24vh', height: '24vh' }}
+                    />
+                </Grid>
+                <Grid item sm container>
+                        <Grid item xs>
+                            <Typography gutterBottom variant="h4" component="div">
+                                {profile.firstname} {profile.lastname}
+                            </Typography>
+                            <Typography variant="h5" gutterBottom>
+                                {profile.username}
+                            </Typography>
+                        </Grid>
+                </Grid>
+            </Grid>
+            {photos &&
+            <Grid container>
+                <Grid>
+                    <ListItem>
+                        <ListItemAvatar>
+                        <Avatar>
+                            <ImageIcon />
+                        </Avatar>
+                        </ListItemAvatar>
+                        <ListItemText primary={photos.length} secondary="posts" />
+                    </ListItem>
+                </Grid>
+                <Grid>
+                    <ListItem>
+                        <ListItemAvatar>
+                        <Avatar>
+                            <FavoriteIcon/>
+                        </Avatar>
+                        </ListItemAvatar>
+                        {likes ?
+                        <ListItemText primary={likes} secondary="likes" />
+                        :
+                        <ListItemText primary="0" secondary="likes" />
+                        }
+                    </ListItem>
+                </Grid>
+            </Grid>
+            }
+            <br></br>
+            <Divider />
+            <br></br>
+            { photos &&
+            <ImageList cols={3}>
+                {photos.map((photo) => (
+                    <ImageListItem key={photo._id} onClick={imageOnClick}>
+                        <img 
+                            id={photo._id}
+                            src={"http://localhost:3001/"+photo.path}
+                            alt={photo.name}
+                            loading="lazy"
                         />
-                    </Grid>
-                    <Grid item sm container>
-                            <Grid item xs>
-                                <Typography gutterBottom variant="h4" component="div">
-                                    {profile.firstname} {profile.lastname}
-                                </Typography>
-                                <Typography variant="h5" gutterBottom>
-                                    {profile.username}
-                                </Typography>
-                            </Grid>
-                    </Grid>
-                </Grid>
-                {photos &&
-                <Grid container>
-                    <Grid>
-                        <ListItem>
-                            <ListItemAvatar>
-                            <Avatar>
-                                <ImageIcon />
-                            </Avatar>
-                            </ListItemAvatar>
-                            <ListItemText primary={photos.length} secondary="posts" />
-                        </ListItem>
-                    </Grid>
-                    <Grid>
-                        <ListItem>
-                            <ListItemAvatar>
-                            <Avatar>
-                                <FavoriteIcon/>
-                            </Avatar>
-                            </ListItemAvatar>
-                            {likes ?
-                            <ListItemText primary={likes} secondary="likes" />
-                            :
-                            <ListItemText primary="0" secondary="likes" />
-                            }
-                        </ListItem>
-                    </Grid>
-                </Grid>
-                }
-                <br></br>
-                <Divider />
-                <br></br>
-                { photos &&
-                <ImageList cols={3}>
-                    {photos.map((photo) => (
-                        <ImageListItem key={photo._id} onClick={imageOnClick}>
-                            <img 
-                                id={photo._id}
-                                src={"http://localhost:3001/"+photo.path}
-                                alt={photo.name}
-                                loading="lazy"
-                            />
-                        </ImageListItem>
-                    ))}
-                </ImageList>
-                }
-            </Container>
-        </>
+                    </ImageListItem>
+                ))}
+            </ImageList>
+            }
+        </Container>
     );
 }
 

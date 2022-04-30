@@ -222,6 +222,10 @@ module.exports = {
         var id = req.params.id;
         PhotoModel.findById(id)
             .populate('postedBy')
+            .populate({
+                path: 'comments',
+                populate: { path: 'postedBy' }
+            })
             .exec(function (err, photo) {
                 if (err) {
                     return res.status(500).json({

@@ -226,6 +226,9 @@ function ShowPhoto(props){
         <>
         <Container>
             <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
             { photo.path &&
              <Card>
                 { photo.postedBy && 

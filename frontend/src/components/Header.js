@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useContext } from "react";
 import { UserContext } from "../userContext";
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -78,117 +78,117 @@ function Header(props) {
     };
 
     return (
-        <>
-        <AppBar position="static">
-            <Container maxWidth="xl">
-                <Toolbar disableGutters>
-                <IconButton onClick={handleHomeOnClick}>
-                    <CameraIcon sx={{display: { xs: 'none', md: 'flex' }, color: 'white' }}/>
-                </IconButton>
-                <Typography
-                    variant="h6"
-                    noWrap
-                    component="div"
-                    sx={{ mr: 2, display: { xs: 'none', md: 'flex' }, flexGrow: 1 }}
-                >
-                    PHOTOGRAM
-                </Typography>
+        <AppBar>
+        <Box sx={{ borderBottom: 1, borderColor: 'divider', background: 'white' }}>
+        <Container>
+            <Toolbar disableGutters>
+            <IconButton onClick={handleHomeOnClick}>
+                <CameraIcon sx={{display: { xs: 'none', md: 'flex' }, color: 'black' }}/>
+            </IconButton>
+            <Typography
+                variant="h6"
+                noWrap
+                component="div"
+                sx={{ mr: 2, display: { xs: 'none', md: 'flex', color: 'black' }, flexGrow: 1 }}
+            >
+                PHOTOGRAM
+            </Typography>
 
-                <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-                    <IconButton
-                        size="large"
-                        aria-label="account of current user"
-                        aria-controls="menu-appbar"
-                        aria-haspopup="true"
-                        onClick={handleOpenNavMenu}
-                        color="inherit"
-                    >
-                    <MenuIcon />
-                    </IconButton>
-                    <Menu
-                        id="menu-appbar"
-                        anchorEl={anchorElNav}
-                        anchorOrigin={{
-                            vertical: 'bottom',
-                            horizontal: 'left',
-                        }}
-                        keepMounted
-                        transformOrigin={{
-                            vertical: 'top',
-                            horizontal: 'left',
-                        }}
-                        open={Boolean(anchorElNav)}
-                        onClose={handleCloseNavMenu}
-                        sx={{
-                            display: { xs: 'block', md: 'none' },
-                        }}
-                        >
-                            <MenuItem id="Home" onClick={handlePageOnClick}>Home</MenuItem>
-                    </Menu>
-                </Box>
-                <IconButton onClick={handleHomeOnClick}>
-                    <CameraIcon sx={{ display: { xs: 'flex', md: 'none' }, color: 'white' }} />
+            <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+                <IconButton
+                    size="large"
+                    aria-label="account of current user"
+                    aria-controls="menu-appbar"
+                    aria-haspopup="true"
+                    onClick={handleOpenNavMenu}
+                    color="inherit"
+                >
+                <MenuIcon />
                 </IconButton>
-                <Typography
-                    variant="h6"
-                    noWrap
-                    component="div"
-                    sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
-                >
-                    PHOTOGRAM
-                </Typography>
-                <Stack
-                    direction='row'
-                    spacing={1}
-                    mr={2}
-                    sx={{ display: { xs: 'none', md: 'flex' } }}
-                >
-                    <IconButton onClick={handleHomeOnClick}>
-                        <HomeRoundedIcon sx={{ color: 'white' }}/>
-                    </IconButton>
-                    <IconButton onClick={handleUploadOnClick}>
-                        <AddBoxRoundedIcon sx={{ color: 'white' }}/>
-                    </IconButton>
-                </Stack>
-                <UserContext.Consumer>
-                    { context => (context.user ? 
-                        <Box>
-                            <Tooltip title="Settings">
-                            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                <Avatar alt={userContext.user.username} src={"http://localhost:3001/"+userContext.user.path}></Avatar>
-                            </IconButton>
-                            </Tooltip>
-                            <Menu
-                                sx={{ mt: '45px' }}
-                                id="menu-appbar"
-                                anchorEl={anchorElUser}
-                                anchorOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'right',
-                                }}
-                                keepMounted
-                                transformOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'right',
-                                }}
-                                open={Boolean(anchorElUser)}
-                                onClose={handleCloseUserMenu}
-                                >
-                                {settings.map((setting) => (
-                                    <MenuItem id={setting} key={setting} onClick={handleUserMenuClick}>
-                                        <Typography textAlign="center">{setting}</Typography>
-                                    </MenuItem>
-                                ))}
-                            </Menu>
-                        </Box>
-                    : 
-                        <Button color="inherit" href="/login">Sign In</Button>
-                    )}
-                </UserContext.Consumer>
-                </Toolbar>
-            </Container>
-        </AppBar>
-    </>
+                <Menu
+                    id="menu-appbar"
+                    anchorEl={anchorElNav}
+                    anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'left',
+                    }}
+                    keepMounted
+                    transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'left',
+                    }}
+                    open={Boolean(anchorElNav)}
+                    onClose={handleCloseNavMenu}
+                    sx={{
+                        display: { xs: 'block', md: 'none' },
+                    }}
+                    >
+                        <MenuItem id="Home" onClick={handlePageOnClick}>Home</MenuItem>
+                </Menu>
+            </Box>
+            <IconButton onClick={handleHomeOnClick}>
+                <CameraIcon sx={{ display: { xs: 'flex', md: 'none' }, color: 'black' }} />
+            </IconButton>
+            <Typography
+                variant="h6"
+                noWrap
+                component="div"
+                sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none', color: 'black' } }}
+            >
+                PHOTOGRAM
+            </Typography>
+            <Stack
+                direction='row'
+                spacing={1}
+                mr={2}
+                sx={{ display: { xs: 'none', md: 'flex' } }}
+            >
+                <IconButton onClick={handleHomeOnClick}>
+                    <HomeRoundedIcon sx={{ color: 'black' }}/>
+                </IconButton>
+                <IconButton onClick={handleUploadOnClick}>
+                    <AddBoxRoundedIcon sx={{ color: 'black' }}/>
+                </IconButton>
+            </Stack>
+            <UserContext.Consumer>
+                { context => (context.user ? 
+                    <Box>
+                        <Tooltip title="Settings">
+                        <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                            <Avatar alt={userContext.user.username} src={"http://localhost:3001/"+userContext.user.path}></Avatar>
+                        </IconButton>
+                        </Tooltip>
+                        <Menu
+                            sx={{ mt: '45px' }}
+                            id="menu-appbar"
+                            anchorEl={anchorElUser}
+                            anchorOrigin={{
+                                vertical: 'top',
+                                horizontal: 'right',
+                            }}
+                            keepMounted
+                            transformOrigin={{
+                                vertical: 'top',
+                                horizontal: 'right',
+                            }}
+                            open={Boolean(anchorElUser)}
+                            onClose={handleCloseUserMenu}
+                            >
+                            {settings.map((setting) => (
+                                <MenuItem id={setting} key={setting} onClick={handleUserMenuClick}>
+                                    <Typography textAlign="center">{setting}</Typography>
+                                </MenuItem>
+                            ))}
+                        </Menu>
+                    </Box>
+                : 
+                    <Button color="inherit" href="/login">Sign In</Button>
+                )}
+            </UserContext.Consumer>
+            </Toolbar>
+        </Container>
+    </Box>
+    </AppBar>
     );
 }
 

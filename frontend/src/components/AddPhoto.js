@@ -52,6 +52,9 @@ function AddPhoto(props) {
         <>
         <Container>
             <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
             <Box sx={{ width: '100%' }}>
             <Stepper activeStep={activeStepIndex} alternativeLabel>
                 {steps.map((label) => (
