@@ -15,9 +15,11 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import CameraIcon from '@mui/icons-material/PhotoCamera';
-import { Icon, Stack } from '@mui/material';
-import AddBoxRoundedIcon from '@mui/icons-material/AddBoxRounded';
+import { Icon, ListItemIcon, ListItemText, Stack } from '@mui/material';
+import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined';
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
+import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
+import ExploreOutlinedIcon from '@mui/icons-material/ExploreOutlined';
 import Zoom from '@mui/material/Zoom';
 
 const settings = ['Upload Photo', 'Profile', 'Logout'];
@@ -100,6 +102,7 @@ function Header(props) {
             <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
                 <IconButton
                     size="large"
+                    sx={{ color: 'black' }}
                     aria-label="account of current user"
                     aria-controls="menu-appbar"
                     aria-haspopup="true"
@@ -126,7 +129,12 @@ function Header(props) {
                         display: { xs: 'block', md: 'none' },
                     }}
                     >
-                        <MenuItem id="Home" onClick={handlePageOnClick}>Home</MenuItem>
+                        <MenuItem id="Home" onClick={handlePageOnClick}>
+                            <ListItemIcon sx={{ color: 'black' }}>
+                                <HomeRoundedIcon fontSize="small" />
+                            </ListItemIcon>
+                            <ListItemText>Home</ListItemText>
+                        </MenuItem>
                 </Menu>
             </Box>
             <IconButton onClick={handleHomeOnClick}>
@@ -153,7 +161,17 @@ function Header(props) {
                 </Tooltip>
                 <Tooltip TransitionComponent={Zoom} title="Upload">
                     <IconButton onClick={handleUploadOnClick}>
-                        <AddBoxRoundedIcon sx={{ color: 'black' }}/>
+                        <AddBoxOutlinedIcon sx={{ color: 'black' }}/>
+                    </IconButton>
+                </Tooltip>
+                <Tooltip TransitionComponent={Zoom} title="Explore">
+                    <IconButton>
+                        <ExploreOutlinedIcon sx={{ color: 'black' }}/>
+                    </IconButton>
+                </Tooltip>
+                <Tooltip TransitionComponent={Zoom} title="Likes">
+                    <IconButton>
+                        <FavoriteBorderOutlinedIcon sx={{ color: 'black' }}/>
                     </IconButton>
                 </Tooltip>
             </Stack>
