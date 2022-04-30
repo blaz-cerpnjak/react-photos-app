@@ -200,44 +200,46 @@ module.exports = {
      */
     update: function (req, res) {
         var id = req.params.id;
-        PhotoModel.findOne({_id: id}, function (err, photo) {
-            if (err) {
-                return res.status(500).json({
-                    message: 'Error when getting photo',
-                    error: err
-                });
-            }
-
-            if (!photo) {
-                return res.status(404).json({
-                    message: 'No such photo'
-                });
-            }
-
-            photo.name = req.body.name ? req.body.name : photo.name;
-			photo.path = req.body.path ? req.body.path : photo.path;
-			photo.postedBy = req.body.postedBy ? req.body.postedBy : photo.postedBy;
-			photo.views = req.body.views ? req.body.views : photo.views;
-			photo.likes = req.body.likes ? req.body.likes : photo.likes;
-			photo.reports = req.body.reports ? req.body.reports : photo.reports;
-            photo.score = req.body.score ? req.body.score : photo.score;
-            if (req.body.hidden && req.body.hidden === true) {
-                photo.hidden = true;
-            } else {
-                photo.hidden = false;
-            }
-
-            photo.save(function (err, photo) {
+        PhotoModel.findById(id)
+            .populate('postedBy')
+            .exec(function (err, photo) {
                 if (err) {
-                    console.log(err);
                     return res.status(500).json({
-                        message: 'Error when updating photo.',
+                        message: 'Error when getting photo',
                         error: err
                     });
                 }
-            
-                return res.json(photo);
-            });
+
+                if (!photo) {
+                    return res.status(404).json({
+                        message: 'No such photo'
+                    });
+                }
+
+                photo.name = req.body.name ? req.body.name : photo.name;
+                photo.path = req.body.path ? req.body.path : photo.path;
+                photo.postedBy = req.body.postedBy ? req.body.postedBy : photo.postedBy;
+                photo.views = req.body.views ? req.body.views : photo.views;
+                photo.likes = req.body.likes ? req.body.likes : photo.likes;
+                photo.reports = req.body.reports ? req.body.reports : photo.reports;
+                photo.score = req.body.score ? req.body.score : photo.score;
+                if (req.body.hidden && req.body.hidden === true) {
+                    photo.hidden = true;
+                } else {
+                    photo.hidden = false;
+                }
+
+                photo.save(function (err, photo) {
+                    if (err) {
+                        console.log(err);
+                        return res.status(500).json({
+                            message: 'Error when updating photo.',
+                            error: err
+                        });
+                    }
+                
+                    return res.json(photo);
+                });
         });
     },
 

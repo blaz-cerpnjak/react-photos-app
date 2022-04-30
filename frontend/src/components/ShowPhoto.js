@@ -155,6 +155,8 @@ function ShowPhoto(props){
                 likes: likes
             })
         });
+        const data = await res.json();
+        setPhoto(data);
 
         if (userLiked) setUserLiked(false);
         else setUserLiked(true)
