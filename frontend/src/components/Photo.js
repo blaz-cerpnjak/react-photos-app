@@ -17,6 +17,8 @@ import { Alert, AlertTitle, Menu, MenuItem } from '@mui/material';
 import FlagRoundedIcon from '@mui/icons-material/FlagRounded';
 import Snackbar from '@mui/material/Snackbar';
 import Moment from 'moment';
+import Zoom from '@mui/material/Zoom';
+import Tooltip from '@mui/material/Tooltip';
 
 function Photo(props){
     const userContext = useContext(UserContext); 
@@ -223,17 +225,23 @@ function Photo(props){
                 </CardContent>
                 <CardActions disableSpacing>
                     { userLiked ? 
-                        <IconButton color="error" onClick={likePhoto}>
-                            <FavoriteIcon/>
-                        </IconButton>
+                        <Tooltip TransitionComponent={Zoom} title="Unlike">
+                            <IconButton color="error" onClick={likePhoto}>
+                                <FavoriteIcon/>
+                            </IconButton>
+                        </Tooltip>
                     :
+                    <Tooltip TransitionComponent={Zoom} title="Like">
                         <IconButton onClick={likePhoto}>
                             <FavoriteIcon/>
                         </IconButton>
+                    </Tooltip>
                     }
-                    <IconButton aria-label="share">
-                        <ShareIcon />
-                    </IconButton>
+                    <Tooltip TransitionComponent={Zoom} title="Share">
+                        <IconButton aria-label="share">
+                            <ShareIcon />
+                        </IconButton>
+                    </Tooltip>
                 </CardActions>
             </Card>}
             <br></br>

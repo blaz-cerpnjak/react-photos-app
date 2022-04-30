@@ -86,7 +86,7 @@ function Register() {
     return(
          <>
          {userContext.user ? <Navigate replace to="/" /> : ""}
-
+         <br></br>
          <Grid container component="main" sx={{ height: '100vh' }}>
              <CssBaseline />
              <Grid

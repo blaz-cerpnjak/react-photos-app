@@ -207,7 +207,7 @@ function Header(props) {
                         </Menu>
                     </Box>
                 : 
-                    <Button color="inherit" href="/login">Sign In</Button>
+                    <Button sx={{ color: 'black' }} href="/login">Sign In</Button>
                 )}
             </UserContext.Consumer>
             </Toolbar>

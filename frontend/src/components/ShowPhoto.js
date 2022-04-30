@@ -19,6 +19,8 @@ import { UserContext } from '../userContext';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import Snackbar from '@mui/material/Snackbar';
 import Moment from 'moment';
+import Tooltip from '@mui/material/Tooltip';
+import Zoom from '@mui/material/Zoom';
 
 function ShowPhoto(props){
     const navigate = useNavigate()
@@ -294,17 +296,23 @@ function ShowPhoto(props){
                 </CardContent>
                 <CardActions disableSpacing>
                     { userLiked ? 
+                    <Tooltip TransitionComponent={Zoom} title="Unlike">
                         <IconButton color="error" onClick={likePhoto}>
                             <FavoriteIcon/>
                         </IconButton>
+                    </Tooltip>
                     :
+                    <Tooltip TransitionComponent={Zoom} title="Like">
                         <IconButton onClick={likePhoto}>
                             <FavoriteIcon/>
                         </IconButton>
+                    </Tooltip>
                     }
-                    <IconButton aria-label="share">
-                        <ShareIcon />
-                    </IconButton>
+                    <Tooltip TransitionComponent={Zoom} title="Share">
+                        <IconButton aria-label="share">
+                            <ShareIcon />
+                        </IconButton>
+                    </Tooltip>
                 </CardActions>
             </Card> 
             }

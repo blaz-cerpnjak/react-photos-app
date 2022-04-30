@@ -55,7 +55,8 @@ function Login(){
     return (
         <div>
             {userContext.user ? <Navigate replace to="/" /> : ""}
-
+            <br></br>
+            <br></br>
             <Grid container component="main" sx={{ height: '100vh' }}>
                 <CssBaseline />
                 <Grid
@@ -73,6 +74,8 @@ function Login(){
                     }}
                 />
                 <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+                    <br></br>
+                    <br></br>
                     <Box
                         sx={{
                         my: 8,
