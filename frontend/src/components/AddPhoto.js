@@ -1,4 +1,4 @@
-import { Alert, AlertTitle, Button, Container, IconButton, Step, StepLabel, Stepper } from '@mui/material';
+import { Alert, AlertTitle, Button, Container, IconButton, Typography } from '@mui/material';
 import { useContext, useState } from 'react'
 import { Navigate } from 'react-router';
 import { UserContext } from '../userContext';
@@ -50,44 +50,55 @@ function AddPhoto(props) {
 
     return (
         <>
-        <Container>
+        <Container sx={{ height: '100vh' }}>
             <br></br>
             <br></br>
-            <br></br>
-            <br></br>
-            <Box sx={{ width: '100%' }}>
-            <Stepper activeStep={activeStepIndex} alternativeLabel>
-                {steps.map((label) => (
-                    <Step key={label}>
-                        <StepLabel>{label}</StepLabel>
-                    </Step>
-                ))}
-            </Stepper>
-            </Box>
             <br></br>
             <br></br>
             <form className="form-group" onSubmit={onSubmit}>
                 {!userContext.user ? <Navigate replace to="/login" /> : ""}
                 {uploaded ? <Navigate replace to="/" /> : ""}
-                <input type="text" className="form-control" name="title" placeholder="Title" value={title} onChange={(e)=>{setTitle(e.target.value); setActiveStepIndex(0)}}/>
+                <input 
+                    style={{ backgroundColor: "primary.main", color: "secondary.main" }}
+                    type="text" 
+                    className="form-control" 
+                    name="title" placeholder="Title" 
+                    value={title} 
+                    onChange={(e)=>{setTitle(e.target.value); setActiveStepIndex(0); showError(false)}}
+                />
                 <br></br>
                 <label htmlFor="contained-button-file">
-                    <Input accept="image/*" id="contained-button-file" multiple type="file" onChange={(e) => {setFile(e.target.files[0]); setActiveStepIndex(1)}} />
-                    <Button startIcon={<PhotoCamera/>} variant="contained" component="span">Select Photo</Button>
-                    &nbsp;&nbsp;
+                    <Input 
+                        accept="image/*" id="contained-button-file" 
+                        multiple type="file" 
+                        onChange={(e) => {setFile(e.target.files[0]); setActiveStepIndex(1); showError(false)}} 
+                    />
+                    <Button 
+                        sx={{ backgroundColor: "btnBlue.main", color: "white" }} 
+                        startIcon={<PhotoCamera sx={{ color: "white" }}/>} 
+                        variant="contained" 
+                        component="span"
+                    >
+                        Select Photo
+                    </Button>
+                    <br></br>
+                    <br></br>
                     { file ? 
-                        "Photo is selected."
+                        <Typography sx={{ color: "secondary.main" }} variant='subtitle1'>Photo is selected.</Typography>
                     :
-                        "Photo is not selected."
+                        <Typography sx={{ color: "secondary.main" }} variant='subtitle1'>Photo is not selected.</Typography>
                     }
                 </label>
                 <br></br>
                 <br></br>
-                { file && title ?
-                <Button startIcon={<AddIcon/>} variant="contained" onClick={onSubmit}>Upload</Button>
-                :
-                <Button disabled startIcon={<AddIcon/>} variant="contained" onClick={onSubmit}>Upload</Button>
-                }
+                <Button 
+                    sx={{ backgroundColor: "btnBlue.main", color: "white" }} 
+                    startIcon={<AddIcon sx={{ color: "white" }}/>} 
+                    variant="contained"
+                    onClick={onSubmit}
+                >
+                    Upload
+                </Button>
             </form>
             <br></br>
             { isError ?

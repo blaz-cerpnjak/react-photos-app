@@ -1,4 +1,4 @@
-import { Alert, AlertTitle, Avatar, Divider, Grid, IconButton } from "@mui/material";
+import { Alert, AlertTitle, Avatar, Divider, Grid, IconButton, Typography } from "@mui/material";
 import { useContext, useState, useEffect } from 'react'
 import { UserContext } from '../userContext';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
@@ -78,9 +78,10 @@ function Comment(props) {
             </Grid>
             { props.comment.postedBy && 
             <Grid justifyContent="left" item xs zeroMinWidth>
-                <h4 style={{ margin: 0, textAlign: "left" }}>{ props.comment.postedBy.username }</h4>
-                <p style={{ textAlign: "left", color: "gray" }}>{Moment(datetime).format('d.MM.yyyy HH:mm')}</p>
-                <p style={{ textAlign: "left", color: "black" }}>{ props.comment.comment }</p>
+                <Typography variant="body2" color="secondary.main" style={{ margin: 0, textAlign: "left" }}>{ props.comment.postedBy.username }</Typography>
+                <Typography style={{ textAlign: "left", color: "gray"}}>{Moment(datetime).format('d.MM.yyyy HH:mm')}</Typography>
+                <br></br>
+                <Typography color="secondary.main" style={{ textAlign: "left" }}>{ props.comment.comment }</Typography>
             </Grid>
             }
             { isAuthor &&
@@ -121,7 +122,7 @@ function Comment(props) {
             : ""
             }
         </Grid>
-        <Divider variant="fullWidth" style={{ margin: "30px 0" }} />
+        <Divider variant="fullWidth" style={{ margin: "30px 0", color: "gray" }} />
         </div>
         }
         <Snackbar open={snackbarOpened} autoHideDuration={3000} onClose={handleSnackbarClose}>

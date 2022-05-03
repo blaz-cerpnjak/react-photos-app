@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useContext } from "react";
 import { UserContext } from "../userContext";
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -15,12 +15,14 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import CameraIcon from '@mui/icons-material/PhotoCamera';
-import { Icon, ListItemIcon, ListItemText, Stack } from '@mui/material';
+import { ListItemIcon, ListItemText, Stack } from '@mui/material';
 import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined';
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import ExploreOutlinedIcon from '@mui/icons-material/ExploreOutlined';
 import Zoom from '@mui/material/Zoom';
+import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded';
+import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded';
 
 const settings = ['Upload Photo', 'Profile', 'Logout'];
 
@@ -82,19 +84,19 @@ function Header(props) {
 
     return (
         <AppBar>
-        <Box sx={{ borderBottom: 1, borderColor: 'divider', background: 'white' }}>
+        <Box sx={{ borderBottom: 1, borderColor: 'divider', background: 'background.main' }}>
         <Container>
             <Toolbar disableGutters>
             <Tooltip TransitionComponent={Zoom} title="Home">
                 <IconButton onClick={handleHomeOnClick}>
-                    <CameraIcon sx={{display: { xs: 'none', md: 'flex' }, color: 'black' }}/>
+                    <CameraIcon sx={{display: { xs: 'none', md: 'flex' }, color: 'secondary.main' }}/>
                 </IconButton>
             </Tooltip>
             <Typography
                 variant="h6"
                 noWrap
                 component="div"
-                sx={{ mr: 2, display: { xs: 'none', md: 'flex', color: 'black' }, flexGrow: 1 }}
+                sx={{ mr: 2, display: { xs: 'none', md: 'flex', color: 'secondary.main' }, flexGrow: 1 }}
             >
                 PHOTOGRAM
             </Typography>
@@ -102,7 +104,7 @@ function Header(props) {
             <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
                 <IconButton
                     size="large"
-                    sx={{ color: 'black' }}
+                    sx={{ color: 'seconday.main' }}
                     aria-label="account of current user"
                     aria-controls="menu-appbar"
                     aria-haspopup="true"
@@ -130,7 +132,7 @@ function Header(props) {
                     }}
                     >
                         <MenuItem id="Home" onClick={handlePageOnClick}>
-                            <ListItemIcon sx={{ color: 'black' }}>
+                            <ListItemIcon sx={{ color: 'secondary.main' }}>
                                 <HomeRoundedIcon fontSize="small" />
                             </ListItemIcon>
                             <ListItemText>Home</ListItemText>
@@ -138,13 +140,13 @@ function Header(props) {
                 </Menu>
             </Box>
             <IconButton onClick={handleHomeOnClick}>
-                <CameraIcon sx={{ display: { xs: 'flex', md: 'none' }, color: 'black' }} />
+                <CameraIcon sx={{ display: { xs: 'flex', md: 'none' }, color: 'secondary.main' }} />
             </IconButton>
             <Typography
                 variant="h6"
                 noWrap
                 component="div"
-                sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none', color: 'black' } }}
+                sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none', color: 'secondary.main' } }}
             >
                 PHOTOGRAM
             </Typography>
@@ -156,24 +158,29 @@ function Header(props) {
             >
                 <Tooltip TransitionComponent={Zoom} title="Home">
                     <IconButton onClick={handleHomeOnClick}>
-                        <HomeRoundedIcon sx={{ color: 'black' }}/>
+                        <HomeRoundedIcon sx={{ color: 'secondary.main' }}/>
                     </IconButton>
                 </Tooltip>
                 <Tooltip TransitionComponent={Zoom} title="Upload">
                     <IconButton onClick={handleUploadOnClick}>
-                        <AddBoxOutlinedIcon sx={{ color: 'black' }}/>
+                        <AddBoxOutlinedIcon sx={{ color: 'secondary.main' }}/>
                     </IconButton>
                 </Tooltip>
                 <Tooltip TransitionComponent={Zoom} title="Explore">
                     <IconButton>
-                        <ExploreOutlinedIcon sx={{ color: 'black' }}/>
+                        <ExploreOutlinedIcon sx={{ color: 'secondary.main' }}/>
                     </IconButton>
                 </Tooltip>
                 <Tooltip TransitionComponent={Zoom} title="Likes">
                     <IconButton>
-                        <FavoriteBorderOutlinedIcon sx={{ color: 'black' }}/>
+                        <FavoriteBorderOutlinedIcon sx={{ color: 'secondary.main' }}/>
                     </IconButton>
                 </Tooltip>
+                <Tooltip TransitionComponent={Zoom} title={ props.darkMode ? "Light mode" : "Dark mode" }>
+                    <IconButton sx={{ ml: 1 }} onClick={props.onChange} color="secondary">
+                        { props.darkMode ? <LightModeRoundedIcon /> : <DarkModeRoundedIcon /> }
+                    </IconButton>
+            </Tooltip>
             </Stack>
             <UserContext.Consumer>
                 { context => (context.user ? 
@@ -207,7 +214,7 @@ function Header(props) {
                         </Menu>
                     </Box>
                 : 
-                    <Button sx={{ color: 'black' }} href="/login">Sign In</Button>
+                    <Button sx={{ color: 'secondary.main' }} href="/login">Sign In</Button>
                 )}
             </UserContext.Consumer>
             </Toolbar>

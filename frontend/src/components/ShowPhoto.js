@@ -1,5 +1,6 @@
 import { useNavigate, useParams, Navigate } from 'react-router-dom';
 import { useContext, useState, useEffect } from 'react';
+import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
@@ -21,6 +22,29 @@ import Snackbar from '@mui/material/Snackbar';
 import Moment from 'moment';
 import Tooltip from '@mui/material/Tooltip';
 import Zoom from '@mui/material/Zoom';
+
+const CustomTextField = styled(TextField)({
+    '& label': {
+        color: 'gray',
+    },
+    '&:hover label': {
+        color: 'secondary.main',
+    },
+    '& label.Mui-focused': {
+        color: 'gray',
+    },
+    '& .MuiOutlinedInput-root': {
+        '& fieldset': {
+            borderColor: 'gray',
+        },
+        '&:hover fieldset': {
+            borderColor: 'gray',
+        },
+        '&.Mui-focused fieldset': {
+            borderColor: 'gray',
+        },
+    },
+});
 
 function ShowPhoto(props){
     const navigate = useNavigate()
@@ -232,7 +256,7 @@ function ShowPhoto(props){
             <br></br>
             <br></br>
             { photo.path &&
-             <Card>
+             <Card sx={{ backgroundColor: "primary.main" }}>
                 { photo.postedBy && 
                 <CardHeader
                     avatar={
@@ -244,7 +268,7 @@ function ShowPhoto(props){
                     }
                     action={
                         <>
-                        <IconButton aria-label="settings" onClick={photoMenuClick}>
+                        <IconButton color="secondary" aria-label="settings" onClick={photoMenuClick}>
                             <MoreVertIcon />
                         </IconButton>
                         <Menu
@@ -276,7 +300,8 @@ function ShowPhoto(props){
                         </>
                     }
                     title={photo.postedBy.username}
-                    subheader={Moment(datetime).format('d.MM.yyyy HH:mm')}
+                    subheader={<p style={{ color: 'gray' }}>{Moment(datetime).format('d.MM.yyyy HH:mm')}</p>}
+                    sx={{ color: "secondary.main" }}
                 /> 
                 }
                 <CardMedia
@@ -285,11 +310,11 @@ function ShowPhoto(props){
                     alt={photo.name}
                 />
                 <CardContent>
-                    <Typography>
+                    <Typography color="secondary.main">
                         {photo.name}
                     </Typography>
                     {photo.likes && 
-                    <Typography>
+                    <Typography color="secondary.main">
                         {photo.likes.length} likes
                     </Typography>
                     }
@@ -303,13 +328,13 @@ function ShowPhoto(props){
                     </Tooltip>
                     :
                     <Tooltip TransitionComponent={Zoom} title="Like">
-                        <IconButton onClick={likePhoto}>
+                        <IconButton sx={{ color: "secondary.main" }} onClick={likePhoto}>
                             <FavoriteIcon/>
                         </IconButton>
                     </Tooltip>
                     }
                     <Tooltip TransitionComponent={Zoom} title="Share">
-                        <IconButton aria-label="share">
+                        <IconButton sx={{ color: "secondary.main" }} aria-label="share">
                             <ShareIcon />
                         </IconButton>
                     </Tooltip>
@@ -317,27 +342,28 @@ function ShowPhoto(props){
             </Card> 
             }
             <br></br>
-            <Paper style={{ padding: "40px 20px" }}>
+            <Paper sx={{ backgroundColor: "primary.main" }} style={{ padding: "40px 20px" }}>
                 { photo && photo.comments && 
                     photo.comments.map(comment => (<Comment key={comment.id} photo={photo} comment={comment}/>))
                 }
                 <Grid container>
                     <Grid item xs={10}>
-                        <TextField
+                        <CustomTextField 
                             id="comment"
                             name="comment"
-                            label="Comment"
-                            fullWidth
-                            value={comment} 
+                            value={comment}
                             onChange={(e)=>{setComment(e.target.value)}}
-                            variant="standard"
+                            sx={{ input: { color: "secondary.main" } }} 
+                            fullWidth 
+                            label="Comment"
                         />
                     </Grid>
                     <Grid item xs={2}>
-                    {comment ?
                     <Button 
                         sx={{
                             display: { xs: 'none', md: 'flex' },
+                            backgroundColor: "btnBlue.main", 
+                            color: "white"
                         }} 
                         variant="contained" 
                         onClick={postComment}
@@ -345,39 +371,16 @@ function ShowPhoto(props){
                     >
                         Post
                     </Button>
-                    :
-                    <Button 
-                        disabled
-                        sx={{
-                            display: { xs: 'none', md: 'flex' },
-                        }} 
-                        variant="contained" 
-                        onClick={postComment}
-                        endIcon={<SendIcon />}
-                    >
-                        Post
-                    </Button>
-                    }
-                    {comment ?
                     <IconButton
                         sx={{
                             display: {xs : 'flex', md: 'none' },
+                            backgroundColor: "btnBlue.main", 
+                            color: "white"
                         }}
                         onClick={postComment}
                     >
                         <SendIcon/>
                     </IconButton>
-                    :
-                    <IconButton
-                        disabled
-                        sx={{
-                            display: {xs : 'flex', md: 'none' },
-                        }}
-                        onClick={postComment}
-                    >
-                        <SendIcon/>
-                    </IconButton>
-                    }
                     </Grid>
                 </Grid>
             </Paper>

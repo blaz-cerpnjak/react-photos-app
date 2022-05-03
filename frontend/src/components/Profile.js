@@ -45,7 +45,7 @@ function Profile(){
     };
 
     return (
-        <Container sx={{ background: '#f8f9fa' }}>
+        <Container sx={{ background: 'background.main', height: '100vh' }}>
             <br></br>
             <br></br>
             <br></br>
@@ -60,10 +60,10 @@ function Profile(){
                 </Grid>
                 <Grid item sm container>
                         <Grid item xs>
-                            <Typography gutterBottom variant="h4" component="div">
+                            <Typography color="secondary" gutterBottom variant="h4" component="div">
                                 {profile.firstname} {profile.lastname}
                             </Typography>
-                            <Typography variant="h5" gutterBottom>
+                            <Typography color="secondary" variant="h5" gutterBottom>
                                 {profile.username}
                             </Typography>
                         </Grid>
@@ -78,7 +78,7 @@ function Profile(){
                             <ImageIcon />
                         </Avatar>
                         </ListItemAvatar>
-                        <ListItemText primary={photos.length} secondary="posts" />
+                        <ListItemText sx={{ color: "secondary.main" }} primary={photos.length} secondary="posts" secondaryTypographyProps={{ color: "secondary" }} />
                     </ListItem>
                 </Grid>
                 <Grid>
@@ -89,9 +89,9 @@ function Profile(){
                         </Avatar>
                         </ListItemAvatar>
                         {likes ?
-                        <ListItemText primary={likes} secondary="likes" />
+                        <ListItemText sx={{ color: "secondary.main" }} primary={likes} secondary="likes" secondaryTypographyProps={{ color: "secondary" }}/>
                         :
-                        <ListItemText primary="0" secondary="likes" />
+                        <ListItemText sx={{ color: "secondary.main" }} primary="0" secondary="likes" secondaryTypographyProps={{ color: "secondary" }} />
                         }
                     </ListItem>
                 </Grid>

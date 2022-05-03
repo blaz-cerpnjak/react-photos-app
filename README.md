@@ -9,7 +9,8 @@ Photogram is a simple web app, similar to Instagram.
 - liking and commenting photos,
 - reporting photos (5 reports hide the photo),
 - algorithm for sorting photos by score (likes, reports) + time decay ([more here](https://github.com/clux/decay)),
-- showing message with snackbars.
+- showing message with snackbars,
+- light and dark mode switch.
 
 ## Images:
 ### Register page

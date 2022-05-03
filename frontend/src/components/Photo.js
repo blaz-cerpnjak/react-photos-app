@@ -23,8 +23,8 @@ import Tooltip from '@mui/material/Tooltip';
 function Photo(props){
     const userContext = useContext(UserContext); 
     const navigate = useNavigate()
-    const photo = props.photo;
     const [userLiked, setUserLiked] = useState('');
+    const [photo, setPhoto] = useState(props.photo)
     const [snackbarErrorOpened, setSnackbarErrorOpened] = useState(false);
     const [error, setError] = useState('')
     const [isError, showError] = useState(false);
@@ -98,6 +98,8 @@ function Photo(props){
                 likes: likes
             })
         });
+        const data = await res.json();
+        setPhoto(data);
 
         if (userLiked) setUserLiked(false);
         else setUserLiked(true)
@@ -166,7 +168,7 @@ function Photo(props){
     return (
         <div>
             { props.photo &&
-             <Card>
+             <Card sx={{ backgroundColor: "primary.main" }}>
                 { props.photo.postedBy &&
                 <CardHeader
                     avatar={
@@ -178,7 +180,7 @@ function Photo(props){
                     }
                     action={
                         <>
-                        <IconButton aria-label="settings" onClick={photoMenuClick}>
+                        <IconButton sx={{ color: "secondary.main" }} aria-label="settings" onClick={photoMenuClick}>
                             <MoreVertIcon />
                         </IconButton>
                         <Menu
@@ -204,7 +206,8 @@ function Photo(props){
                         </>
                     }
                     title={props.photo.postedBy.username}
-                    subheader={Moment(datetime).format('d.MM.yyyy HH:mm')}
+                    subheader={<Typography variant='body2'>{Moment(datetime).format('d.MM.yyyy HH:mm')}</Typography>}
+                    sx={{ color: "secondary.main" }}
                 />
                 }
                 <CardMedia
@@ -214,11 +217,11 @@ function Photo(props){
                     onClick={imageOnClick}
                 />
                 <CardContent>
-                    <Typography>
+                    <Typography color="secondary.main">
                         {props.photo.name}
                     </Typography>
                     { photo && 
-                    <Typography>
+                    <Typography color="secondary.main">
                         {photo.likes.length} likes
                     </Typography>
                     }
@@ -232,13 +235,13 @@ function Photo(props){
                         </Tooltip>
                     :
                     <Tooltip TransitionComponent={Zoom} title="Like">
-                        <IconButton onClick={likePhoto}>
+                        <IconButton sx={{ color: "secondary.main" }} onClick={likePhoto}>
                             <FavoriteIcon/>
                         </IconButton>
                     </Tooltip>
                     }
                     <Tooltip TransitionComponent={Zoom} title="Share">
-                        <IconButton aria-label="share">
+                        <IconButton sx={{ color: "secondary.main" }} aria-label="share">
                             <ShareIcon />
                         </IconButton>
                     </Tooltip>
