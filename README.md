@@ -23,7 +23,9 @@ Photogram is a simple web app, similar to Instagram.
 ### Publish photos page
 <img src="./images/publish_page.png" width="700" />&nbsp;&nbsp;&nbsp;&nbsp;
 ### Comment section
-<img src="./images/comment_section.png" width="700" />
+<img src="./images/comment_section.png" width="700" />&nbsp;&nbsp;&nbsp;&nbsp;
+### Dark mode
+<img src="./images/dark_mode.png" width="700" />
 
 
 ## Technologies <img src="https://upload.wikimedia.org/wikipedia/commons/9/9a/Visual_Studio_Code_1.35_icon.svg" width="20">&nbsp;<img src="https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg" width="20"> <br>

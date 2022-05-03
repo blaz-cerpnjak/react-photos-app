@@ -48,7 +48,7 @@ const lightTheme = createTheme({
 
 function App() {
   const [user, setUser] = useState(localStorage.user ? JSON.parse(localStorage.user) : null);
-  const [darkMode, setDarkMode] = useState(true);
+  const [darkMode, setDarkMode] = useState(false);
 
   const updateUserData = (userInfo) => {
     localStorage.setItem("user", JSON.stringify(userInfo));
