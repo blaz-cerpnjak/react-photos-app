@@ -11,6 +11,30 @@ import { Paper } from '@mui/material';
 import { Typography } from '@mui/material';
 import { Link } from '@mui/material';
 import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
+import { styled } from '@mui/material/styles';
+
+const CustomTextField = styled(TextField)({
+    '& label': {
+        color: 'gray',
+    },
+    '&:hover label': {
+        color: 'secondary.main',
+    },
+    '& label.Mui-focused': {
+        color: 'gray',
+    },
+    '& .MuiOutlinedInput-root': {
+        '& fieldset': {
+            borderColor: 'gray',
+        },
+        '&:hover fieldset': {
+            borderColor: 'gray',
+        },
+        '&.Mui-focused fieldset': {
+            borderColor: 'gray',
+        },
+    },
+});
 
 function Login(){
     const [username, setUsername] = useState("");
@@ -73,7 +97,7 @@ function Login(){
                         backgroundPosition: 'center',
                     }}
                 />
-                <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+                <Grid backgroundColor="background.main" item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
                     <br></br>
                     <br></br>
                     <Box
@@ -83,6 +107,7 @@ function Login(){
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
+                        color: 'secondary.main',
                         }}
                     >
                         <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
@@ -96,24 +121,26 @@ function Login(){
                             noValidate sx={{ mt: 1 }}
                             onSubmit={Login}    
                         >
-                            <TextField
+                            <CustomTextField
                                 margin="normal"
                                 required
                                 fullWidth
                                 id="username"
                                 label="Username"
                                 name="username"
+                                sx={{ input: { color: "secondary.main" } }} 
                                 value={username} 
                                 onChange={(e)=>(setUsername(e.target.value))}
                                 autoComplete="current-username"
                                 autoFocus
                             />
-                            <TextField
+                            <CustomTextField
                                 margin="normal"
                                 required
                                 fullWidth
                                 name="password"
                                 label="Password"
+                                sx={{ input: { color: "secondary.main" } }} 
                                 type="password"
                                 id="password"
                                 value={password} 
@@ -124,13 +151,13 @@ function Login(){
                                 type="submit"
                                 fullWidth
                                 variant="contained"
-                                sx={{ mt: 3, mb: 2 }}
+                                sx={{ mt: 3, mb: 2, backgroundColor: "btnBlue.main", color: "white" }}
                             >
                                 Sign In
                             </Button>
                             <Grid container>
                                 <Grid item>
-                                <Link href="../register" variant="body2" sx={{mb: 2}}>
+                                <Link href="../register" color='btnBlue.main' variant="body2" sx={{mb: 2}}>
                                     {"Don't have an account? Sign Up"}
                                 </Link>
                                 </Grid>
