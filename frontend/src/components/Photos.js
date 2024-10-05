@@ -45,21 +45,23 @@ function Photos(){
     return(
         <>
             <Container>
-                <br></br>
-                <br></br>
-                <br></br>
-                <br></br>
-                <Grid 
+                <br />
+                <br />
+                <br />
+                <br />
+                <Grid
                     container
-                    xs={12}
-                    md={6}
                     direction="column"
                     alignItems="center"
                     justifyContent="center"
                 >
-                    {photos.map(photo=>(<Photo photo={photo} key={photo._id}></Photo>))}
+                    {photos.map(photo => (
+                        <Grid item xs={12} key={photo._id}>
+                            <Photo photo={photo} />
+                        </Grid>
+                    ))}
                 </Grid>
-                <br></br>
+                <br />
             </Container>
         </>
     );
