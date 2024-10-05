@@ -49,13 +49,13 @@ const CustomTextField = styled(TextField)({
 function ShowPhoto(props){
     const navigate = useNavigate()
     const { id } = useParams();
-    const userContext = useContext(UserContext); 
+    const userContext = useContext(UserContext);
     const [photo, setPhoto] = useState([]);
     const [isAuthor, setAuthor] = useState(false);
     const [comment, setComment] = useState('');
     const [photoMenu, setPhotoMenu] = useState(false);
     const photoMenuOpened = Boolean(photoMenu);
-    const [userLiked, setUserLiked] = useState(false);    
+    const [userLiked, setUserLiked] = useState(false);
     const [snackbarOpened, setSnackbarOpened] = useState(false);
     const [snackbarErrorOpened, setSnackbarOpenedError] = useState(false);
     const [snackbarText, setSnackbarText] = useState('');
@@ -73,7 +73,7 @@ function ShowPhoto(props){
         if (reason === 'clickaway') {
           return;
         }
-        
+
         setSnackbarOpened(false);
         setSnackbarOpenedError(false);
     };
@@ -82,40 +82,46 @@ function ShowPhoto(props){
         navigate('/profile/' + photo.postedBy._id);
     }
 
-    useEffect(function(){
-        const getPhoto = async function() {
-            const res = await fetch("http://localhost:3001/photos/" + id);
-            const data = await res.json();
-            setPhoto(data);
-            setDatetime(data.datetime);
-        }
-        getPhoto();
-    }, [id]);
+    useEffect(() => {
+        const fetchData = async () => {
+            console.log("Fetching data");
+            await getPhoto();
+            await getAuthor();
+            await checkUserLiked();
+        };
 
-    useEffect(function(){
-        const getAuthor = async function() {
-            if (userContext && photo.postedBy._id === userContext.user._id) {
-                setAuthor(true);
-            } else {
-                setAuthor(false);
-            }
-        }
-        getAuthor();
-    }, [photo, userContext]);
+        fetchData();
+    }, [id, userContext]);
 
-    useEffect(function() {
-        const checkUserLiked = async function() {
-            if (photo.likes) {
-                for (let i = 0; i < photo.likes.length; i++) {
-                    if (photo.likes[i] == userContext.user._id) {
-                        setUserLiked(true);
-                        break;
-                    }
+    const getPhoto = async function() {
+        const res = await fetch("http://localhost:3001/photos/" + id);
+        const data = await res.json();
+        setPhoto(data);
+        setDatetime(data.datetime);
+    }
+
+    const getAuthor = async function() {
+        if (!photo || !photo.postedBy) {
+            return
+        }
+
+        if (userContext && photo.postedBy._id === userContext.user._id) {
+            setAuthor(true);
+        } else {
+            setAuthor(false);
+        }
+    }
+
+    const checkUserLiked = async function() {
+        if (photo.likes) {
+            for (let i = 0; i < photo.likes.length; i++) {
+                if (photo.likes[i] === userContext.user._id) {
+                    setUserLiked(true);
+                    break;
                 }
             }
         }
-        checkUserLiked();
-    }, [photo]);
+    }
 
     async function postComment(e){
         e.preventDefault();
@@ -132,7 +138,7 @@ function ShowPhoto(props){
             setSnackbarText("You must write comment first.");
             return;
         }
-        
+
         const res = await fetch("http://localhost:3001/photos/comment", {
             method: "POST",
             credentials: "include",
@@ -143,7 +149,7 @@ function ShowPhoto(props){
             })
         });
         const data = await res.json();
-        console.log(data);
+
         setComment('');
         setPhoto(data);
     }
@@ -162,11 +168,11 @@ function ShowPhoto(props){
 
         var likes = [];
         for (let i = 0; i < photo.likes.length; i++) {
-            if (userContext.user._id == photo.likes[i] && userLiked)
+            if (userContext.user._id === photo.likes[i] && userLiked)
                 continue;
             likes.push(photo.likes[i]);
         }
-        
+
         if (!userLiked)
             likes.push(userContext.user._id);
 
@@ -206,7 +212,7 @@ function ShowPhoto(props){
 
         var reports = [];
         for (let i = 0; i < photo.reports.length; i++) {
-            if (photo.reports[i] == userContext.user._id) {
+            if (photo.reports[i] === userContext.user._id) {
                 setSnackbarOpenedError(true);
             setSnackbarText("You've already reported this photo.");
                 return;
@@ -245,7 +251,7 @@ function ShowPhoto(props){
             setSnackbarOpened(true);
             setSnackbarText("Photo reported");
         }
-        
+
     }
 
     return (
@@ -257,12 +263,12 @@ function ShowPhoto(props){
             <br></br>
             { photo.path &&
              <Card sx={{ backgroundColor: "primary.main" }}>
-                { photo.postedBy && 
+                { photo.postedBy &&
                 <CardHeader
                     avatar={
-                        <Avatar 
+                        <Avatar
                             alt={photo.postedBy.username}
-                            src={"http://localhost:3001/"+photo.postedBy.path} 
+                            src={"http://localhost:3001/"+photo.postedBy.path}
                             onClick={userOnClick}>
                         </Avatar>
                     }
@@ -302,7 +308,7 @@ function ShowPhoto(props){
                     title={photo.postedBy.username}
                     subheader={<p style={{ color: 'gray' }}>{Moment(datetime).format('d.MM.yyyy HH:mm')}</p>}
                     sx={{ color: "secondary.main" }}
-                /> 
+                />
                 }
                 <CardMedia
                     component="img"
@@ -313,14 +319,14 @@ function ShowPhoto(props){
                     <Typography color="secondary.main">
                         {photo.name}
                     </Typography>
-                    {photo.likes && 
+                    {photo.likes &&
                     <Typography color="secondary.main">
                         {photo.likes.length} likes
                     </Typography>
                     }
                 </CardContent>
                 <CardActions disableSpacing>
-                    { userLiked ? 
+                    { userLiked ?
                     <Tooltip TransitionComponent={Zoom} title="Unlike">
                         <IconButton color="error" onClick={likePhoto}>
                             <FavoriteIcon/>
@@ -339,33 +345,35 @@ function ShowPhoto(props){
                         </IconButton>
                     </Tooltip>
                 </CardActions>
-            </Card> 
+            </Card>
             }
             <br></br>
             <Paper sx={{ backgroundColor: "primary.main" }} style={{ padding: "40px 20px" }}>
-                { photo && photo.comments && 
-                    photo.comments.map(comment => (<Comment key={comment.id} photo={photo} comment={comment}/>))
+                {photo && photo.comments &&
+                    photo.comments.map((comment, index) => (
+                        <Comment key={comment.id || `comment-${index}`} photo={photo} comment={comment} />
+                    ))
                 }
                 <Grid container>
                     <Grid item xs={10}>
-                        <CustomTextField 
+                        <CustomTextField
                             id="comment"
                             name="comment"
                             value={comment}
                             onChange={(e)=>{setComment(e.target.value)}}
-                            sx={{ input: { color: "secondary.main" } }} 
-                            fullWidth 
+                            sx={{ input: { color: "secondary.main" } }}
+                            fullWidth
                             label="Comment"
                         />
                     </Grid>
                     <Grid item xs={2}>
-                    <Button 
+                    <Button
                         sx={{
                             display: { xs: 'none', md: 'flex' },
-                            backgroundColor: "btnBlue.main", 
+                            backgroundColor: "btnBlue.main",
                             color: "white"
-                        }} 
-                        variant="contained" 
+                        }}
+                        variant="contained"
                         onClick={postComment}
                         endIcon={<SendIcon />}
                     >
@@ -374,7 +382,7 @@ function ShowPhoto(props){
                     <IconButton
                         sx={{
                             display: {xs : 'flex', md: 'none' },
-                            backgroundColor: "btnBlue.main", 
+                            backgroundColor: "btnBlue.main",
                             color: "white"
                         }}
                         onClick={postComment}
