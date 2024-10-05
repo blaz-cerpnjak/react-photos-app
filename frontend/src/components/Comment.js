@@ -9,7 +9,7 @@ import Snackbar from '@mui/material/Snackbar';
 import Moment from 'moment';
 
 function Comment(props) {
-    const userContext = useContext(UserContext); 
+    const userContext = useContext(UserContext);
     const [isAuthor, setAuthor] = useState(false);
     const [error, setError] = useState('')
     const [comment, setComment] = useState([]);
@@ -26,12 +26,12 @@ function Comment(props) {
     const handleClose = () => {
         setAnchorEl(null);
     };
-    
+
     const handleSnackbarClose = (event, reason) => {
         if (reason === 'clickaway') {
           return;
         }
-        
+
         setSnackbarOpened(false);
     };
 
@@ -55,20 +55,19 @@ function Comment(props) {
             return;
         }
         showError(false);
-        
+
         const res = await fetch("http://localhost:3001/photoComments/" + props.comment._id, {
             credentials: 'include',
-            method: "DELETE" 
+            method: "DELETE"
         });
-        const data = await res.json();
+
         setCommentRemoved(true);
         setSnackbarOpened(true);
-        props.onRemove();
     }
 
     return (
         <>
-        { !commentRemoved &&        
+        { !commentRemoved &&
         <div>
         <Grid container wrap="nowrap" spacing={2}>
             <Grid item>
@@ -76,7 +75,7 @@ function Comment(props) {
                 <Avatar alt={ props.comment.postedBy.username }  src={"http://localhost:3001/"+props.comment.postedBy.path}/>
             }
             </Grid>
-            { props.comment.postedBy && 
+            { props.comment.postedBy &&
             <Grid justifyContent="left" item xs zeroMinWidth>
                 <Typography variant="body2" color="secondary.main" style={{ margin: 0, textAlign: "left" }}>{ props.comment.postedBy.username }</Typography>
                 <Typography style={{ textAlign: "left", color: "gray"}}>{Moment(datetime).format('d.MM.yyyy HH:mm')}</Typography>
@@ -111,13 +110,13 @@ function Comment(props) {
                 </Menu>
             </Grid>
             }
-            { isError ? 
+            { isError ?
             <>
             <br></br>
             <Alert severity="error">
                 <AlertTitle>Error</AlertTitle>
                 {error} <strong>Please try again!</strong>
-            </Alert> 
+            </Alert>
             </>
             : ""
             }
