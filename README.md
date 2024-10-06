@@ -27,6 +27,11 @@ Photogram is a simple web app, similar to Instagram.
 ### Dark mode
 <img src="./images/dark_mode.png" width="700" />
 
+## How to Run?
+Move to the root of the project and run:
+```console
+docker-compose up
+```
 
 ## Technologies <img src="https://upload.wikimedia.org/wikipedia/commons/9/9a/Visual_Studio_Code_1.35_icon.svg" width="20">&nbsp;<img src="https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg" width="20"> <br>
 This application was developed in [Visual Studio Code](https://code.visualstudio.com/) using MongoDB, Express, React and NodeJS (MERN stack). <br><br>
