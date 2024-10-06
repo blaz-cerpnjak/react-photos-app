@@ -5,13 +5,15 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 // connect mongoose with mongoDB
-var mongoose = require('mongoose');
-var mydb = require('./db_link');
-var mongoDB = mydb.getDBLink();
-mongoose.connect(mongoDB);
+const mongoose = require('mongoose');
+const mongoDB = process.env.MONGO_URI || 'mongodb://localhost:27017/app-db';
+
+mongoose.connect(mongoDB).then(r =>
+    console.log("Connected to MongoDB")
+).catch(e => console.log(e));
+
 mongoose.Promise = global.Promise;
-var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+mongoose.connection.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 // add routers
 var indexRouter = require('./routes/index');

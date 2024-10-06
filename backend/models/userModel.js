@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-var bcrypt = require('bcrypt');
+var bcrypt = require('bcryptjs');
 var Schema   = mongoose.Schema;
 
 var userSchema = new Schema({
@@ -31,7 +31,7 @@ userSchema.statics.authenticate = function(username, password, callback){
 			var err = new Error("User not found.");
 			err.status = 401;
 			return callback(err);
-		} 
+		}
 		bcrypt.compare(password, user.password, function(err, result){
 			if(result === true){
 				return callback(null, user);
@@ -39,7 +39,7 @@ userSchema.statics.authenticate = function(username, password, callback){
 				return callback();
 			}
 		});
-		 
+
 	});
 }
 
